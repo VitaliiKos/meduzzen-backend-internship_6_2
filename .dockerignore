@@ -8,3 +8,5 @@ __pycache__
 .git
 .idea
 venv
+postgres_data
+cache
