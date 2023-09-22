@@ -1,0 +1,9 @@
+Watching for file changes with StatReloader
+"GET /health_check HTTP/1.1" 200 52
+"GET /health_check HTTP/1.1" 200 52
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 2117
+"GET /health_check HTTP/1.1" 200 52
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET /health_check HTTP/1.1" 200 52

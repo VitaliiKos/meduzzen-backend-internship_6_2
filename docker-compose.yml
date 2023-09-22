@@ -16,8 +16,9 @@ services:
       - redis
     volumes:
       - .:/drf_app
+    environment:
+      - POSTGRES_HOST=postgres
     restart: on-failure
-
   redis:
     image: "redis:7-alpine"
     container_name: redis
@@ -40,10 +41,6 @@ services:
       - .env
     networks:
       - meduzzen
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DATABASE}
     ports:
       - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     volumes:
