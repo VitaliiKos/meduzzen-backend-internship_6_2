@@ -3,7 +3,7 @@
 wait_for_postgres() {
     until nc -z "$POSTGRES_HOST" "$POSTGRES_PORT"; do
         echo "PostgresSQL is not available. Waiting..."
-        sleep 1
+        sleep 2
     done
     echo "PostgresSQL started"
 }

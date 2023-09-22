@@ -1,7 +1,4 @@
 version: '3.7'
-networks:
-  meduzzen:
-    name: meduzzen
 services:
   backend:
     container_name: meduzzen_backend
@@ -55,3 +52,6 @@ services:
 volumes:
   postgres_data:
   cache:
+networks:
+  meduzzen:
+    name: meduzzen

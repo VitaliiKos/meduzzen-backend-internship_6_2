@@ -10,3 +10,5 @@ __pycache__
 venv
 postgres_data
 cache
+Dockerfile
+docker-compose.yml
