@@ -11,6 +11,8 @@ WORKDIR /drf_app
 ENV PYTHONUNBUFFERED=1
 
 
+RUN apk update && apk add --no-cache postgresql-dev gcc musl-dev
+
 # install dependencies
 RUN pip install --upgrade pip
 COPY ./requirements.txt .
@@ -20,7 +22,7 @@ RUN pip install -r requirements.txt
 COPY . .
 COPY start.sh .
 # Expose port
-EXPOSE 8000
+EXPOSE ${APP_PORT}
 
 RUN chmod +x start.sh
 

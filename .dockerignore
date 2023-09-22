@@ -8,3 +8,7 @@ __pycache__
 .git
 .idea
 venv
+postgres_data
+cache
+Dockerfile
+docker-compose.yml
