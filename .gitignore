@@ -3,3 +3,4 @@
 venv
 postgres_data
 cache
+info.log
