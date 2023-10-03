@@ -11,7 +11,7 @@ UserModel: User = get_user_model()
 
 class UsersListCreateView(ListCreateAPIView):
     logger.info('Information incoming!')
-    queryset = User.objects.all().order_by('-created_at')
+    queryset = User.objects.all()
     serializer_class = UserAccountSerializer
     permission_classes = (AllowAny,)
 

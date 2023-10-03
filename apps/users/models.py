@@ -7,8 +7,10 @@ from apps.users.managers import UserManager
 
 class UserModel(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     """Custom user model representing user in the system."""
+
     class Meta:
         db_table = 'auth_users'
+        ordering = ('-created_at',)
 
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)
