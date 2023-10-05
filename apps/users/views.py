@@ -1,15 +1,20 @@
-from rest_framework.generics import RetrieveDestroyAPIView, ListCreateAPIView, UpdateAPIView
 import logging
-from .models import UserModel as User, ProfileModel
-from .serializers import UserAccountSerializer, ProfileSerializer
+
 from django.contrib.auth import get_user_model
+from rest_framework.generics import ListCreateAPIView, RetrieveDestroyAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny
+
+from .models import ProfileModel
+from .models import UserModel as User
+from .serializers import ProfileSerializer, UserAccountSerializer
 
 logger = logging.getLogger(__name__)
 UserModel: User = get_user_model()
 
 
 class UsersListCreateView(ListCreateAPIView):
+    """API view for listing and creating users."""
+
     logger.info('Information incoming!')
     queryset = User.objects.all()
     serializer_class = UserAccountSerializer
@@ -17,6 +22,8 @@ class UsersListCreateView(ListCreateAPIView):
 
 
 class UserProfileUpdateView(UpdateAPIView):
+    """API view for updating user profiles."""
+
     logger.info('Information incoming!')
     queryset = ProfileModel.objects.all()
     serializer_class = ProfileSerializer
@@ -24,6 +31,8 @@ class UserProfileUpdateView(UpdateAPIView):
 
 
 class UserRetrieveUpdateDestroyView(RetrieveDestroyAPIView):
+    """API view for retrieving, updating, and destroying user accounts."""
+
     logger.info('Information incoming!')
     queryset = User.objects.all()
     serializer_class = UserAccountSerializer

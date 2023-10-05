@@ -1,13 +1,16 @@
 from django.contrib.auth import get_user_model
 from django.db import transaction
-from rest_framework.serializers import ModelSerializer
 from djoser.serializers import UserCreateSerializer
+from rest_framework.serializers import ModelSerializer
+
 from apps.users.models import ProfileModel
 
 UserModel = get_user_model()
 
 
 class UserCreateSerializers(UserCreateSerializer):
+    """Serializer for creating user accounts."""
+
     class Meta(UserCreateSerializer.Meta):
         model = UserModel
         fields = ('id', 'email', 'first_name', 'last_name', 'password')
@@ -15,6 +18,7 @@ class UserCreateSerializers(UserCreateSerializer):
 
 class ProfileSerializer(ModelSerializer):
     """Serializer for creating user profile."""
+
     class Meta:
         model = ProfileModel
         fields = ('id', 'city', 'phone', 'age')
@@ -22,6 +26,7 @@ class ProfileSerializer(ModelSerializer):
 
 class UserAccountSerializer(ModelSerializer):
     """Serializer for creating user."""
+
     profile = ProfileSerializer()
 
     class Meta:
@@ -40,6 +45,7 @@ class UserAccountSerializer(ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data: dict):
+        """Create a new user account with associated profile."""
         profile = validated_data.pop('profile')
         user = UserModel.objects.create_user(**validated_data)
         ProfileModel.objects.create(**profile, user=user)

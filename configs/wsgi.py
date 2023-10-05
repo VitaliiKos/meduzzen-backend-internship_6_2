@@ -1,5 +1,4 @@
-"""
-WSGI config for configs project.
+"""WSGI config for configs project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
