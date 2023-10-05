@@ -1,19 +1,27 @@
 from django.contrib.auth import get_user_model
 from django.db import transaction
 from rest_framework.serializers import ModelSerializer
-
+from djoser.serializers import UserCreateSerializer
 from apps.users.models import ProfileModel
 
 UserModel = get_user_model()
 
 
+class UserCreateSerializers(UserCreateSerializer):
+    class Meta(UserCreateSerializer.Meta):
+        model = UserModel
+        fields = ('id', 'email', 'first_name', 'last_name', 'password')
+
+
 class ProfileSerializer(ModelSerializer):
+    """Serializer for creating user profile."""
     class Meta:
         model = ProfileModel
-        fields = ('id', 'name', 'surname', 'age')
+        fields = ('id', 'city', 'phone', 'age')
 
 
-class UserSerializer(ModelSerializer):
+class UserAccountSerializer(ModelSerializer):
+    """Serializer for creating user."""
     profile = ProfileSerializer()
 
     class Meta:
