@@ -1,5 +1,6 @@
 name: Django meduzzen
-
+env:  
+  ENV_FILE: ${{ secrets.ENV_FILE }}
 on:
   push:
     branches: [ main, develop  ]
@@ -15,7 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Create env_file
-      run: echo ${{secrets.ENV_FILE}} > .env
+      run: echo $ENV_FILE | tr " " "\n" >> .env
     - name: Set up Python 
       uses: actions/setup-python@v3
       with:
