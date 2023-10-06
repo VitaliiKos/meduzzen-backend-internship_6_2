@@ -9,7 +9,6 @@ select = [
   "UP",  # pyupgrade,
   "I",   # isort
   "B",
-  "D",
 ]
 exclude = [".venv", "migrations", "__init__"]
 
