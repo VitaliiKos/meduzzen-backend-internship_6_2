@@ -1,49 +1,61 @@
 name: Django meduzzen
 env:
   ENV_FILE: ${{ secrets.ENV_FILE }}
+
 on:
   push:
-    branches: [ main, develop ]
+    branches:
+      - '*'
   pull_request:
-    branches: [ main, develop ]
+    branches:
+      - '*'
   workflow_dispatch: { }
-
 jobs:
   build:
 
     runs-on: ubuntu-latest
 
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: ${{secrets.POSTGRES_USER}}
+          POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
+          POSTGRES_DB: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Check out repository code
+        uses: actions/checkout@v4
 
       - name: Create env_file
         run: echo $ENV_FILE | tr " " "\n" >> .env
 
-      - name: Run linters
-        run: |
-          pip install ruff
-          ruff check .
-
-      - name: Set up Python
-        uses: actions/setup-python@v3
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
         with:
           python-version: 3.11
+          cache: 'pip'
 
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: Install Dependencies
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: print_env
-        run: cat .env
+      - name: Lint with ruff
+        run: |
+          pip install ruff
+          ruff check .
 
-      - name: finish workflow
-        run: echo "workflow finish successfully"
+      - name: Run migrations
+        run: python manage.py migrate
+
+      - name: Run tests
+        run: python manage.py test
