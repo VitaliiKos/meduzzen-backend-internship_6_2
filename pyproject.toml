@@ -9,7 +9,8 @@ select = [
   "UP",  # pyupgrade,
   "I",   # isort
   "B",
+  "D"
 ]
-exclude = [".venv", "migrations", "__init__"]
+exclude = [".venv", "migrations", "__init__", "start.sh", "settings.py", "apps.py", "manage.py"]
 
 [tool.ruff.isort]
