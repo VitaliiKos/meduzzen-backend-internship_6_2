@@ -4,3 +4,4 @@ venv
 postgres_data
 cache
 info.log
+__pycache__
