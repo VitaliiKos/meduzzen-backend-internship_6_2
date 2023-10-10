@@ -20,7 +20,6 @@ class CompanyModel(TimeStampedModel):
     members = models.ManyToManyField(UserModel, through="EmployeeModel")
 
     def __str__(self):
-        """Return a string representation of the CompanyModel instance."""
         return self.name
 
 

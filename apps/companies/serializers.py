@@ -1,9 +1,14 @@
 from django.contrib.auth import get_user_model
 from django.db import transaction
+from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import ModelSerializer
 
 from apps.users.models import UserModel as User
 from apps.users.serializers import UserCreateSerializer
+from core.check_is_owner import get_user_role_in_company
+from core.enums.company_enum import CompanyEnum
+from core.enums.invitation_enum import InvitationEnum
+from core.enums.user_enum import UserEnum
 
 from .models import CompanyModel, EmployeeModel
 
@@ -32,6 +37,30 @@ class CompaniesForCurrentUserSerializer(ModelSerializer):
         fields = ('id', 'name', 'description', 'status', 'member', "members")
         read_only_fields = ('members',)
 
+    def update(self, instance, validated_data):
+        user_id = validated_data.get('user_id', None)
+        user_role = get_user_role_in_company(user_id=user_id, company_id=instance.id)
+        if user_role != UserEnum.OWNER:
+            raise ValidationError(detail='You do not have permission to update this company.')
+
+        if self.partial:
+            instance.status = not instance.status
+
+        if self.update:
+            instance.name = validated_data.get(CompanyEnum.NAME, instance.name)
+            instance.description = validated_data.get(CompanyEnum.DESCRIPTION, instance.description)
+
+        instance.save()
+
+        return instance
+
+    def delete_company(self, instance, user_id):
+        user_role = get_user_role_in_company(user_id=user_id, company_id=instance.id)
+        if user_role != UserEnum.OWNER:
+            raise ValidationError(detail='You do not have permission to delete this company.')
+
+        instance.delete()
+
 
 class CompanySerializer(ModelSerializer):
     """Serializer for creating and updating company objects."""
@@ -45,13 +74,13 @@ class CompanySerializer(ModelSerializer):
     @transaction.atomic
     def create(self, validated_data: dict):
         """Create a new company with its members."""
-        members = validated_data.pop('members')
+        members = validated_data.pop(CompanyEnum.MEMBERS)
         company = CompanyModel.objects.create(**validated_data)
         EmployeeModel.objects.create(
             user=members,
             company=company,
-            invitation_status='accepted',
-            request_status='accepted',
-            role='Owner'
+            invitation_status=InvitationEnum.ACCEPTED,
+            request_status=InvitationEnum.ACCEPTED,
+            role=UserEnum.OWNER
         )
         return company
