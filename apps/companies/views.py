@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 
-from core.enums.user_enum import UserEnum
+from core.enums.company_helper_enum import CompanyHelperEnum
 
 from .models import CompanyModel
 from .models import UserModel as User
@@ -11,7 +11,7 @@ from .serializers import CompaniesForCurrentUserSerializer, CompanySerializer
 UserModel: User = get_user_model()
 
 
-class CompanyListCreateRetrieveUpdateDestroyView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
+class CompanyView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
     """Create, retrieve, update, or delete a company."""
     queryset = CompanyModel.objects.all()
     serializer_class = CompanySerializer
@@ -20,14 +20,14 @@ class CompanyListCreateRetrieveUpdateDestroyView(ListCreateAPIView, RetrieveUpda
 
     def get_serializer_class(self):
 
-        if (UserEnum.REQUEST_OPTION.value in self.request.query_params) or (
+        if (CompanyHelperEnum.REQUEST_OPTION.value in self.request.query_params) or (
                 self.request.method in ['PUT', 'PATCH', 'DELETE']):
-            return CompaniesForCurrentUserSerializer
+            return self.serializer_class_for_current_user
         return self.serializer_class
 
     def get_queryset(self):
         user = self.request.user
-        if (self.request.method == 'GET') and (self.get_serializer_class() == CompaniesForCurrentUserSerializer) and (
+        if (self.request.method == 'GET' and self.get_serializer_class() == CompaniesForCurrentUserSerializer and
                 'pk' not in self.kwargs):
             queryset = CompanyModel.objects.filter(members=user)
         else:

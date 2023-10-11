@@ -5,10 +5,10 @@ from rest_framework.serializers import ModelSerializer
 
 from apps.users.models import UserModel as User
 from apps.users.serializers import UserCreateSerializer
-from core.check_is_owner import get_user_role_in_company
 from core.enums.invitation_enum import InvitationEnum
 from core.enums.user_enum import UserEnum
 
+from .helper import get_user_role_in_company
 from .models import CompanyModel, EmployeeModel
 
 UserModel: User = get_user_model()

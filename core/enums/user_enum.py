@@ -6,4 +6,3 @@ class UserEnum(Enum):
     MANAGER = 'manager'
     EMPLOYEE = 'employee'
     MEMBER = 'member'
-    REQUEST_OPTION = 'get_option'
