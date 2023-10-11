@@ -1,7 +1,6 @@
 from typing import Optional
 
 from apps.companies.models import EmployeeModel
-from core.enums.user_enum import UserEnum
 
 
 def get_user_role_in_company(user_id: int, company_id: int) -> Optional[str]:
@@ -15,6 +14,6 @@ def get_user_role_in_company(user_id: int, company_id: int) -> Optional[str]:
     """
     try:
         member = EmployeeModel.objects.get(user=user_id, company=company_id)
-        return member.role if member.role == UserEnum.OWNER else None
+        return member.role
     except EmployeeModel.DoesNotExist:
         return None

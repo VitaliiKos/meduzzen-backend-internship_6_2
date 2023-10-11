@@ -2,7 +2,8 @@ from enum import Enum
 
 
 class UserEnum(Enum):
-    OWNER = 'Owner'
-    MANAGER = 'Manager'
-    EMPLOYEE = 'Employee'
+    OWNER = 'owner'
+    MANAGER = 'manager'
+    EMPLOYEE = 'employee'
     MEMBER = 'member'
+    REQUEST_OPTION = 'get_option'
