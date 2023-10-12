@@ -8,7 +8,7 @@ from apps.users.models import ProfileModel
 UserModel = get_user_model()
 
 
-class UserCreateSerializers(UserCreateSerializer):
+class UserForDjoserSerializers(UserCreateSerializer):
     """Serializer for creating user accounts."""
 
     class Meta(UserCreateSerializer.Meta):

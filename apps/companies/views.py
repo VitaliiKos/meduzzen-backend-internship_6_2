@@ -3,6 +3,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.permissions import IsAuthenticated
 
 from core.enums.company_helper_enum import CompanyHelperEnum
+from core.permisions.is_owner import IsOwnerPermission
 
 from .models import CompanyModel
 from .models import UserModel as User
@@ -16,19 +17,17 @@ class CompanyView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
     queryset = CompanyModel.objects.all()
     serializer_class = CompanySerializer
     serializer_class_for_current_user = CompaniesForCurrentUserSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsOwnerPermission)
 
     def get_serializer_class(self):
 
-        if (CompanyHelperEnum.REQUEST_OPTION.value in self.request.query_params) or (
-                self.request.method in ['PUT', 'PATCH', 'DELETE']):
+        if CompanyHelperEnum.OPTION in self.request.query_params or self.request.method in ['PUT', 'PATCH', 'DELETE']:
             return self.serializer_class_for_current_user
         return self.serializer_class
 
     def get_queryset(self):
         user = self.request.user
-        if (self.request.method == 'GET' and self.get_serializer_class() == CompaniesForCurrentUserSerializer and
-                'pk' not in self.kwargs):
+        if self.get_serializer_class() == CompaniesForCurrentUserSerializer and 'pk' not in self.kwargs:
             queryset = CompanyModel.objects.filter(members=user)
         else:
             queryset = CompanyModel.objects.all()

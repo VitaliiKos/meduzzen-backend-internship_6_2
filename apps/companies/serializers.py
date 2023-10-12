@@ -4,7 +4,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import ModelSerializer
 
 from apps.users.models import UserModel as User
-from apps.users.serializers import UserCreateSerializer
+from apps.users.serializers import UserForDjoserSerializers
 from core.enums.invitation_enum import InvitationEnum
 from core.enums.user_enum import UserEnum
 
@@ -29,7 +29,7 @@ class CompaniesForCurrentUserSerializer(ModelSerializer):
     """
 
     member = EmployeeSerializer(many=True, read_only=True)
-    members = UserCreateSerializer(many=True, read_only=True)
+    members = UserForDjoserSerializers(many=True, read_only=True)
 
     class Meta:
         model = CompanyModel
@@ -39,7 +39,7 @@ class CompaniesForCurrentUserSerializer(ModelSerializer):
     def update(self, instance, validated_data):
         user_id = validated_data.get('user_id', None)
         user_role = get_user_role_in_company(user_id=user_id, company_id=instance.id)
-        if user_role != UserEnum.OWNER.value:
+        if user_role != UserEnum.OWNER:
             raise ValidationError(detail='You do not have permission to update this company.')
 
         if self.partial:
@@ -56,7 +56,7 @@ class CompaniesForCurrentUserSerializer(ModelSerializer):
     @staticmethod
     def delete(instance, user_id):
         user_role = get_user_role_in_company(user_id=user_id, company_id=instance.id)
-        if user_role != UserEnum.OWNER.value:
+        if user_role != UserEnum.OWNER:
             raise ValidationError(detail='You do not have permission to delete this company.')
 
         instance.delete()
@@ -80,8 +80,8 @@ class CompanySerializer(ModelSerializer):
         EmployeeModel.objects.create(
             user=members,
             company=company,
-            invitation_status=InvitationEnum.ACCEPTED.value,
-            request_status=InvitationEnum.ACCEPTED.value,
-            role=UserEnum.OWNER.value
+            invitation_status=InvitationEnum.ACCEPTED,
+            request_status=InvitationEnum.ACCEPTED,
+            role=UserEnum.OWNER
         )
         return company

@@ -1,8 +1,8 @@
-from enum import Enum
+from enum import StrEnum, auto
 
 
-class UserEnum(Enum):
-    OWNER = 'owner'
-    MANAGER = 'manager'
-    EMPLOYEE = 'employee'
-    MEMBER = 'member'
+class UserEnum(StrEnum):
+    OWNER = auto()
+    MANAGER = auto()
+    EMPLOYEE = auto()
+    MEMBER = auto()

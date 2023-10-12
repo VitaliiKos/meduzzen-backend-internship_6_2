@@ -14,9 +14,9 @@ DJOSER = {
     'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.jwt.TokenStrategy',
     'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': ['http://localhost:8000/google', 'http://localhost:8000/facebook'],
     'SERIALIZERS': {
-        'user_create': 'apps.users.serializers.UserCreateSerializers',
-        'user': 'apps.users.serializers.UserCreateSerializers',
-        'current_user': 'apps.users.serializers.UserCreateSerializers',
+        'user_create': 'apps.users.serializers.UserForDjoserSerializers',
+        'user': 'apps.users.serializers.UserForDjoserSerializers',
+        'current_user': 'apps.users.serializers.UserForDjoserSerializers',
         'user_delete': 'djoser.serializers.UserCreateSerializer'
     },
 

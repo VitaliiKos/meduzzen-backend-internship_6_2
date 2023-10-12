@@ -1,5 +1,5 @@
-from enum import Enum
+from enum import StrEnum, auto
 
 
-class CompanyHelperEnum(Enum):
-    REQUEST_OPTION = 'get_option'
+class CompanyHelperEnum(StrEnum):
+    OPTION = auto()

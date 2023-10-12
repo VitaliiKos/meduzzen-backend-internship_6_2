@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum, auto
 
 
-class InvitationEnum(Enum):
-    ACCEPTED = 'accepted'
-    REJECTED = 'rejected'
-    PENDING = 'pending'
+class InvitationEnum(StrEnum):
+    ACCEPTED = auto()
+    REJECTED = auto()
+    PENDING = auto()
