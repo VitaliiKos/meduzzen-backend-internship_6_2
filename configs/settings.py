@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # my apps
     'apps.health_check',
     'apps.users',
+    'apps.companies',
 
 ]
 

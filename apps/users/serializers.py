@@ -8,12 +8,21 @@ from apps.users.models import ProfileModel
 UserModel = get_user_model()
 
 
-class UserCreateSerializers(UserCreateSerializer):
+class UserSerializers(UserCreateSerializer):
     """Serializer for creating user accounts."""
 
     class Meta(UserCreateSerializer.Meta):
         model = UserModel
-        fields = ('id', 'email', 'first_name', 'last_name', 'password')
+        fields = (
+            'id', 'email', 'first_name', 'last_name', 'password', 'is_active', 'is_staff', 'is_superuser', 'last_login',
+            'created_at', 'updated_at', 'profile'
+        )
+        read_only_fields = ('id', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'created_at', 'updated_at')
+        extra_kwargs = {
+            'password': {
+                'write_only': True
+            }
+        }
 
 
 class ProfileSerializer(ModelSerializer):
