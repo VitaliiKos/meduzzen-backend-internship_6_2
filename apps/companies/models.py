@@ -15,7 +15,7 @@ class CompanyModel(TimeStampedModel):
 
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField()
-    status = models.BooleanField(default=False)
+    visible = models.BooleanField(default=False)
 
     members = models.ManyToManyField(UserModel, through="EmployeeModel")
 

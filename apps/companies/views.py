@@ -42,10 +42,3 @@ class CompanyView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
 
     def perform_create(self, serializer):
         serializer.save(members=self.request.user)
-
-    def perform_update(self, serializer):
-        serializer.save(user_id=self.request.user.id)
-
-    def perform_destroy(self, instance):
-        serializer = self.get_serializer(instance)
-        serializer.delete(instance, user_id=self.request.user.id)

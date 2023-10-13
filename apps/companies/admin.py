@@ -8,9 +8,9 @@ class CompanyModelAdmin(admin.ModelAdmin):
 
     verbose_name_plural = "Companies"
 
-    search_fields = ('name',)
+    search_fields = ('name', 'visible')
 
-    list_filter = ('status',)
+    list_filter = ('visible',)
 
 
 admin.site.register(CompanyModel, CompanyModelAdmin)
