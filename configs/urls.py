@@ -6,6 +6,7 @@ urlpatterns = [
     path('health_check', include('apps.health_check.urls')),
     path('users', include('apps.users.urls')),
     path('company', include('apps.companies.urls')),
+    path('invitation', include('apps.invitations.urls')),
 
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'apps.health_check',
     'apps.users',
     'apps.companies',
+    'apps.invitations',
 
 ]
 

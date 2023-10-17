@@ -3,21 +3,15 @@ from django.db import transaction
 from rest_framework.serializers import ModelSerializer
 
 from apps.users.models import UserModel as User
-from apps.users.serializers import UserSerializers
+from apps.users.serializers import UserSerializer
 from core.enums.invitation_enum import InvitationEnum
 from core.enums.user_enum import UserEnum
 
-from .models import CompanyModel, EmployeeModel
+from ..invitations.models import EmployeeModel
+from ..invitations.serializers import EmployeeSerializer
+from .models import CompanyModel
 
 UserModel: User = get_user_model()
-
-
-class EmployeeSerializer(ModelSerializer):
-    """Serializer for EmployeeModel objects."""
-
-    class Meta:
-        model = EmployeeModel
-        fields = '__all__'
 
 
 class CompaniesForCurrentUserSerializer(ModelSerializer):
@@ -25,7 +19,7 @@ class CompaniesForCurrentUserSerializer(ModelSerializer):
     """
 
     member = EmployeeSerializer(many=True, read_only=True)
-    members = UserSerializers(many=True, read_only=True)
+    members = UserSerializer(many=True, read_only=True)
 
     class Meta:
         model = CompanyModel

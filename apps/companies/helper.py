@@ -1,6 +1,6 @@
 from typing import Optional
 
-from apps.companies.models import EmployeeModel
+from apps.invitations.models import EmployeeModel
 
 
 def get_user_role_in_company(user_id: int, company_id: int) -> Optional[str]:
