@@ -1,15 +1,23 @@
 from django.contrib import admin
 
-from apps.invitations.models import EmployeeModel
+from .models import InviteModel, RequestModel
 
 
-class EmployeeModelAdmin(admin.ModelAdmin):
-    """Admin configuration for Invitations."""
+class InviteModelAdmin(admin.ModelAdmin):
+    verbose_name_plural = "Invites"
+    list_display = ('user', 'company', 'status', 'created_at', 'updated_at')
+    list_filter = ('status', 'company')
+    search_fields = ('user__email', 'company__name')
+    list_per_page = 20
 
-    verbose_name_plural = "Invitations"
-    list_display = ('user', 'company', 'invitation_status', 'request_status', 'role')
-    search_fields = ('user__username', 'company__name')
-    list_filter = ('invitation_status', 'request_status', 'role')
+
+class RequestModelAdmin(admin.ModelAdmin):
+    verbose_name_plural = "Requests"
+    list_display = ('user', 'company', 'status', 'created_at', 'updated_at')
+    list_filter = ('status', 'company')
+    search_fields = ('user__email', 'company__name')
+    list_per_page = 20
 
 
-admin.site.register(EmployeeModel, EmployeeModelAdmin)
+admin.site.register(InviteModel, InviteModelAdmin)
+admin.site.register(RequestModel, RequestModelAdmin)

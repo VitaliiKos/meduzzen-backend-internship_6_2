@@ -18,13 +18,13 @@ class CompanyModel(TimeStampedModel):
     description = models.TextField()
     visible = models.BooleanField(default=False)
 
-    members = models.ManyToManyField(UserModel, through="invitations.EmployeeModel")
+    members = models.ManyToManyField(UserModel, through="employee.EmployeeModel")
 
     def is_owner(self, user):
         return self.employeemodel_set.filter(user=user, role=UserEnum.OWNER).exists()
 
     def has_member(self, user):
-        return self.employeemodel_set.filter(user=user, role=UserEnum.FORMER).exclude(role=UserEnum.FORMER).exists()
+        return self.employeemodel_set.filter(user=user, role__isnull=False).exists()
 
     def __str__(self):
         return self.name

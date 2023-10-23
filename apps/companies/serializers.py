@@ -4,11 +4,10 @@ from rest_framework.serializers import ModelSerializer
 
 from apps.users.models import UserModel as User
 from apps.users.serializers import UserSerializer
-from core.enums.invitation_enum import InvitationEnum
 from core.enums.user_enum import UserEnum
 
-from ..invitations.models import EmployeeModel
-from ..invitations.serializers import EmployeeSerializer
+from .employee.models import EmployeeModel
+from .employee.serializers import EmployeeSerializer
 from .models import CompanyModel
 
 UserModel: User = get_user_model()
@@ -25,6 +24,7 @@ class CompaniesForCurrentUserSerializer(ModelSerializer):
         model = CompanyModel
         fields = ('id', 'name', 'description', 'visible', 'member', "members")
         read_only_fields = ('members',)
+        order_by = ('created_at',)
 
     def update(self, instance, validated_data):
         if self.partial:
@@ -41,6 +41,7 @@ class CompanySerializer(ModelSerializer):
     class Meta:
         model = CompanyModel
         fields = ('id', 'name', 'description', 'visible', 'member')
+        order_by = ('created_at',)
 
     @transaction.atomic
     def create(self, validated_data: dict):
@@ -51,8 +52,6 @@ class CompanySerializer(ModelSerializer):
         EmployeeModel.objects.create(
             user=members,
             company=company,
-            invitation_status=InvitationEnum.ACCEPTED,
-            request_status=InvitationEnum.ACCEPTED,
             role=UserEnum.OWNER
         )
         return company
