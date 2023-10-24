@@ -26,5 +26,9 @@ class CompanyModel(TimeStampedModel):
     def has_member(self, user):
         return self.employeemodel_set.filter(user=user, role__isnull=False).exists()
 
+    def get_members(self):
+        """Get all employees with roles 'OWNER' or 'MEMBER' for this company."""
+        return self.employeemodel_set.filter(role__in=[UserEnum.OWNER, UserEnum.MEMBER])
+
     def __str__(self):
         return self.name

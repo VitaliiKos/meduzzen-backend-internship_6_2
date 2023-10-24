@@ -2,7 +2,7 @@ from enum import StrEnum, auto
 
 
 class InviteEnum(StrEnum):
-    APPROVE = auto()
-    REJECTED = auto()
+    ACCEPT = auto()
+    DECLINE = auto()
     PENDING = auto()
-    CANCEL = auto()
+    REVOKE = auto()

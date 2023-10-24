@@ -8,7 +8,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -22,8 +21,13 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='companies.companymodel')),
-                ('status', models.CharField(choices=[('accept', core.enums.request_enum.RequestEnum['ACCEPT']), ('decline', core.enums.request_enum.RequestEnum['DECLINE']), ('pending', core.enums.request_enum.RequestEnum['PENDING']), ('cancel', core.enums.request_enum.RequestEnum['CANCEL'])], default=None, max_length=10, null=True)),
+                (
+                'company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='companies.companymodel')),
+                ('status', models.CharField(choices=[('approve', core.enums.request_enum.RequestEnum['APPROVE']),
+                                                     ('reject', core.enums.request_enum.RequestEnum['REJECTED']),
+                                                     ('pending', core.enums.request_enum.RequestEnum['PENDING']),
+                                                     ('cancel', core.enums.request_enum.RequestEnum['CANCEL'])],
+                                            default=None, max_length=10, null=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ],
@@ -37,8 +41,13 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='companies.companymodel')),
-                ('status', models.CharField(choices=[('approve', core.enums.invite_enum.InviteEnum['APPROVE']), ('rejected', core.enums.invite_enum.InviteEnum['REJECTED']), ('pending', core.enums.invite_enum.InviteEnum['PENDING']), ('cancel', core.enums.invite_enum.InviteEnum['CANCEL'])], default=None, max_length=10, null=True)),
+                (
+                'company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='companies.companymodel')),
+                ('status', models.CharField(choices=[('accept', core.enums.invite_enum.InviteEnum['ACCEPT']),
+                                                     ('decline', core.enums.invite_enum.InviteEnum['DECLINE']),
+                                                     ('pending', core.enums.invite_enum.InviteEnum['PENDING']),
+                                                     ('revoke', core.enums.invite_enum.InviteEnum['REVOKE'])],
+                                            default=None, max_length=10, null=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ],

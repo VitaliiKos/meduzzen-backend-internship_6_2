@@ -8,19 +8,18 @@ from apps.companies.employee.models import EmployeeModel
 from apps.companies.employee.serializers import EmployeeListSerializer, EmployeeSerializer
 from apps.companies.models import CompanyModel
 from apps.invitations.helper import (
-    check_invite_status,
-    get_employee_invitation,
-    get_invite_by_status,
-    get_user_invitation,
-    get_user_invite_by_status,
-    process_invitation_update,
+    get_company_invitation_or_request,
+    get_company_invitations_or_requests_list,
+    get_user_invitation_or_request,
+    get_user_invitations_or_requests_list,
+    update_employee,
 )
 from apps.invitations.serializers import InviteModelSerializer, RequestModelSerializer
 from apps.users.models import UserModel as User
 from core.enums.invite_enum import InviteEnum
 from core.enums.request_enum import RequestEnum
 from core.enums.user_enum import UserEnum
-from core.permisions.is_company_owner import IsCompanyOwnerPermission
+from core.permisions.company_permission import IsCompanyOwner
 
 UserModel: User = get_user_model()
 
@@ -28,7 +27,7 @@ UserModel: User = get_user_model()
 class CompanyInviteActionsView(ListCreateAPIView, RetrieveUpdateAPIView):
     queryset = CompanyModel.objects.all()
     serializer_class = InviteModelSerializer
-    permission_classes = (IsAuthenticated, IsCompanyOwnerPermission)
+    permission_classes = (IsAuthenticated, IsCompanyOwner)
 
     def create(self, request, *args, **kwargs):
         user_id = request.data.get('user')
@@ -50,8 +49,8 @@ class CompanyInviteActionsView(ListCreateAPIView, RetrieveUpdateAPIView):
 
     def list(self, request, *args, **kwargs):
         company = self.get_object()
-        invitation_status = self.request.data.get('invitation_status', 'invite')
-        company_invitation = get_employee_invitation(company, invitation_status)
+        invitation_status = self.request.data.get('invitation_status')
+        company_invitation = get_company_invitations_or_requests_list(company, invitation_status)
         return self.paginate_and_serialize(company_invitation, EmployeeListSerializer)
 
     def update(self, request, *args, **kwargs):
@@ -59,12 +58,10 @@ class CompanyInviteActionsView(ListCreateAPIView, RetrieveUpdateAPIView):
         company = self.get_object()
         invitation_status = self.request.data.get('invitation_status')
         employee = get_object_or_404(EmployeeModel, company=company.id, user=user_id)
-        invite = get_invite_by_status(employee, invitation_status)
-        check_invite_status(invite, InviteEnum.PENDING)
-        process_invitation_update(employee, invite, invitation_status)
+        invite = get_company_invitation_or_request(employee, invitation_status)
 
-        invite.save()
-        employee.save()
+        employee = update_employee(employee, invitation_status, invite)
+
         serializer = EmployeeSerializer(employee)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -98,7 +95,8 @@ class UserRequestActionsView(ListCreateAPIView):
 
     def list(self, request, *args, **kwargs):
         invitation_status = self.request.data.get('invitation_status', 'request')
-        user_invitation = get_user_invitation(user=request.user.id, invitation_status=invitation_status)
+        user_invitation = get_user_invitations_or_requests_list(user=request.user.id,
+                                                                invitation_status=invitation_status)
         page = self.paginate_queryset(user_invitation)
         serializer = EmployeeSerializer(page, many=True)
         return self.get_paginated_response(serializer.data)
@@ -110,12 +108,12 @@ class UserInvitationDetailActionsView(RetrieveUpdateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        invitation_status = self.request.data.get('invitation_status', InviteEnum.APPROVE)
+        invitation_status = self.request.data.get('invitation_status', InviteEnum.ACCEPT)
         filter_kwargs = {
             'user': user,
             'role': UserEnum.CANDIDATE
         }
-        if invitation_status in [InviteEnum.APPROVE, InviteEnum.REJECTED]:
+        if invitation_status in [InviteEnum.ACCEPT, InviteEnum.DECLINE]:
             filter_kwargs['invite_status__isnull'] = False
         else:
             filter_kwargs['request_status__isnull'] = False
@@ -125,11 +123,9 @@ class UserInvitationDetailActionsView(RetrieveUpdateAPIView):
     def update(self, request, *args, **kwargs):
         invitation_status = self.request.data.get('invitation_status')
         employee = self.get_object()
-        invite = get_user_invite_by_status(employee, invitation_status)
-        check_invite_status(invite, RequestEnum.PENDING)
-        process_invitation_update(employee, invite, invitation_status)
-        invite.save()
-        employee.save()
+        user_invitation = get_user_invitation_or_request(employee, invitation_status)
+
+        employee = update_employee(employee, invitation_status, user_invitation)
+
         serializer = EmployeeSerializer(employee)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
