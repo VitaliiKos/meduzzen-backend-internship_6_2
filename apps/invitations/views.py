@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import status
+from rest_framework.exceptions import APIException
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -49,7 +50,7 @@ class CompanyInviteActionsView(ListCreateAPIView, RetrieveUpdateAPIView):
 
     def list(self, request, *args, **kwargs):
         company = self.get_object()
-        invitation_status = self.request.data.get('invitation_status')
+        invitation_status = self.request.query_params.get('invitation_status')
         company_invitation = get_company_invitations_or_requests_list(company, invitation_status)
         return self.paginate_and_serialize(company_invitation, EmployeeListSerializer)
 
@@ -59,6 +60,8 @@ class CompanyInviteActionsView(ListCreateAPIView, RetrieveUpdateAPIView):
         invitation_status = self.request.data.get('invitation_status')
         employee = get_object_or_404(EmployeeModel, company=company.id, user=user_id)
         invite = get_company_invitation_or_request(employee, invitation_status)
+        if not invite or invite.status != InviteEnum.PENDING.value:
+            return Response({'detail': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
 
         employee = update_employee(employee, invitation_status, invite)
 
@@ -94,7 +97,7 @@ class UserRequestActionsView(ListCreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def list(self, request, *args, **kwargs):
-        invitation_status = self.request.data.get('invitation_status', 'request')
+        invitation_status = self.request.query_params.get('invitation_status')
         user_invitation = get_user_invitations_or_requests_list(user=request.user.id,
                                                                 invitation_status=invitation_status)
         page = self.paginate_queryset(user_invitation)
@@ -108,7 +111,10 @@ class UserInvitationDetailActionsView(RetrieveUpdateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        invitation_status = self.request.data.get('invitation_status', InviteEnum.ACCEPT)
+        invitation_status = self.request.data.get('invitation_status')
+        if invitation_status not in [InviteEnum.ACCEPT, InviteEnum.DECLINE, RequestEnum.CANCEL]:
+            raise APIException("Bad Request. Invalid invitation_status.")
+
         filter_kwargs = {
             'user': user,
             'role': UserEnum.CANDIDATE
@@ -122,6 +128,7 @@ class UserInvitationDetailActionsView(RetrieveUpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         invitation_status = self.request.data.get('invitation_status')
+
         employee = self.get_object()
         user_invitation = get_user_invitation_or_request(employee, invitation_status)
 
