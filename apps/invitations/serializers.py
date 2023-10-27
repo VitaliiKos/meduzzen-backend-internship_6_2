@@ -7,12 +7,14 @@ from core.enums.user_enum import UserEnum
 
 
 class InviteModelSerializer(ModelSerializer):
+    """Serializer for handling company invitations."""
     class Meta:
         model = InviteModel
         fields = '__all__'
 
     @transaction.atomic
     def create(self, validated_data: dict):
+        """Create a company invitation and associate it with an employee."""
         user = validated_data.pop('user')
         company = validated_data.pop('company')
         invite_status = validated_data.pop('status')
@@ -36,12 +38,14 @@ class InviteModelSerializer(ModelSerializer):
 
 
 class RequestModelSerializer(ModelSerializer):
+    """Serializer for handling user requests to join a company."""
     class Meta:
         model = RequestModel
         fields = '__all__'
 
     @transaction.atomic
     def create(self, validated_data: dict):
+        """Create a user request to join a company and associate it with an employee."""
         user = validated_data.pop('user')
         company = validated_data.pop('company')
         request_status = validated_data.pop('status')

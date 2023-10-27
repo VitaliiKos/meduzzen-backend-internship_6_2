@@ -10,6 +10,7 @@ from core.enums.user_enum import UserEnum
 
 
 def get_company_invitations_or_requests_list(company, invitation_status):
+    """Get a list of company invitations or requests for a given company and invitation status."""
     if invitation_status == ConstantsEnum.INVITE.value:
         return EmployeeModel.objects.filter(company=company, role=UserEnum.CANDIDATE, invite_status__isnull=False)
     else:
@@ -17,20 +18,23 @@ def get_company_invitations_or_requests_list(company, invitation_status):
 
 
 def get_company_invitation_or_request(employee, invitation_status):
-    if invitation_status in [RequestEnum.APPROVE, RequestEnum.REJECTED]:
+    """Get a specific company invitation or request for an employee."""
+    if invitation_status in [RequestEnum.APPROVED, RequestEnum.REJECTED]:
         return get_object_or_404(RequestModel, id=employee.request_status_id)
-    elif invitation_status == InviteEnum.REVOKE:
+    elif invitation_status == InviteEnum.REVOKED:
         return get_object_or_404(InviteModel, id=employee.invite_status_id)
 
 
 def get_user_invitation_or_request(employee, invitation_status):
-    if invitation_status in [InviteEnum.ACCEPT, InviteEnum.DECLINE]:
+    """Get a specific user invitation or request for an employee."""
+    if invitation_status in [InviteEnum.ACCEPTED, InviteEnum.DECLINED]:
         return get_object_or_404(InviteModel, id=employee.invite_status_id)
     else:
         return get_object_or_404(RequestModel, id=employee.request_status_id)
 
 
 def get_user_invitations_or_requests_list(user: int, invitation_status: str):
+    """Get a list of user invitations or requests for a given user and invitation status."""
     if invitation_status == ConstantsEnum.REQUEST.value:
         return EmployeeModel.objects.filter(user=user, role=UserEnum.CANDIDATE, request_status__isnull=False)
     else:
@@ -39,7 +43,8 @@ def get_user_invitations_or_requests_list(user: int, invitation_status: str):
 
 @transaction.atomic
 def update_employee(employee, invitation_status, invite):
-    if invitation_status in [RequestEnum.APPROVE.value, InviteEnum.ACCEPT.value]:
+    """Update the employee's role and the invitation or request status."""
+    if invitation_status in [RequestEnum.APPROVED.value, InviteEnum.ACCEPTED.value]:
         employee.role = UserEnum.MEMBER.value
     else:
         employee.role = None

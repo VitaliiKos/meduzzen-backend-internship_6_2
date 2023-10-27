@@ -26,11 +26,14 @@ UserModel: User = get_user_model()
 
 
 class CompanyInviteActionsView(ListCreateAPIView, RetrieveUpdateAPIView):
+    """A view for handling company invitations and requests."""
+
     queryset = CompanyModel.objects.all()
     serializer_class = InviteModelSerializer
     permission_classes = (IsAuthenticated, IsCompanyOwner)
 
     def create(self, request, *args, **kwargs):
+        """Create a company invitation."""
         user_id = request.data.get('user')
         company = self.get_object()
 
@@ -49,12 +52,14 @@ class CompanyInviteActionsView(ListCreateAPIView, RetrieveUpdateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def list(self, request, *args, **kwargs):
+        """List company invitations or requests."""
         company = self.get_object()
         invitation_status = self.request.query_params.get('invitation_status')
         company_invitation = get_company_invitations_or_requests_list(company, invitation_status)
         return self.paginate_and_serialize(company_invitation, EmployeeListSerializer)
 
     def update(self, request, *args, **kwargs):
+        """Update a company invitation or request."""
         user_id = request.data.get('user_id')
         company = self.get_object()
         invitation_status = self.request.data.get('invitation_status')
@@ -75,11 +80,14 @@ class CompanyInviteActionsView(ListCreateAPIView, RetrieveUpdateAPIView):
 
 
 class UserRequestActionsView(ListCreateAPIView):
+    """A view for handling user requests to join a company."""
+
     queryset = CompanyModel.objects.all()
     serializer_class = RequestModelSerializer
     permission_classes = (IsAuthenticated,)
 
     def create(self, request, *args, **kwargs):
+        """Create a user request to join a company."""
         user = self.request.user.id
         company = self.get_object()
         if company.has_member(user):
@@ -97,6 +105,7 @@ class UserRequestActionsView(ListCreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def list(self, request, *args, **kwargs):
+        """List user invitations and requests."""
         invitation_status = self.request.query_params.get('invitation_status')
         user_invitation = get_user_invitations_or_requests_list(user=request.user.id,
                                                                 invitation_status=invitation_status)
@@ -106,20 +115,21 @@ class UserRequestActionsView(ListCreateAPIView):
 
 
 class UserInvitationDetailActionsView(RetrieveUpdateAPIView):
+    """A view for handling user invitation details and responses."""
     serializer_class = EmployeeSerializer
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         user = self.request.user
         invitation_status = self.request.data.get('invitation_status')
-        if invitation_status not in [InviteEnum.ACCEPT, InviteEnum.DECLINE, RequestEnum.CANCEL]:
+        if invitation_status not in [InviteEnum.ACCEPTED, InviteEnum.DECLINED, RequestEnum.CANCELED]:
             raise APIException("Bad Request. Invalid invitation_status.")
 
         filter_kwargs = {
             'user': user,
             'role': UserEnum.CANDIDATE
         }
-        if invitation_status in [InviteEnum.ACCEPT, InviteEnum.DECLINE]:
+        if invitation_status in [InviteEnum.ACCEPTED, InviteEnum.DECLINED]:
             filter_kwargs['invite_status__isnull'] = False
         else:
             filter_kwargs['request_status__isnull'] = False
@@ -127,6 +137,7 @@ class UserInvitationDetailActionsView(RetrieveUpdateAPIView):
         return invitations
 
     def update(self, request, *args, **kwargs):
+        """Update a user invitation or request."""
         invitation_status = self.request.data.get('invitation_status')
 
         employee = self.get_object()

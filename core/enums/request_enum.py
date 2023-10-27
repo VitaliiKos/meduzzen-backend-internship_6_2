@@ -2,7 +2,7 @@ from enum import StrEnum, auto
 
 
 class RequestEnum(StrEnum):
-    APPROVE = auto()
+    APPROVED = auto()
     REJECTED = auto()
     PENDING = auto()
-    CANCEL = auto()
+    CANCELED = auto()

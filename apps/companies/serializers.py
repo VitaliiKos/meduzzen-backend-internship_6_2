@@ -14,8 +14,7 @@ UserModel: User = get_user_model()
 
 
 class CompaniesForCurrentUserSerializer(ModelSerializer):
-    """Serializer for displaying companies for the currently authenticated user.
-    """
+    """Serializer for displaying companies for the currently authenticated user."""
 
     member = EmployeeSerializer(many=True, read_only=True)
     members = UserSerializer(many=True, read_only=True)
