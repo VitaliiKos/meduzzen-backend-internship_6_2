@@ -13,10 +13,10 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='requestmodel',
             name='status',
-            field=models.CharField(choices=[('approved', core.enums.request_enum.RequestEnum['APPROVED']),
-                                            ('rejected', core.enums.request_enum.RequestEnum['REJECTED']),
-                                            ('pending', core.enums.request_enum.RequestEnum['PENDING']),
-                                            ('canceled', core.enums.request_enum.RequestEnum['CANCELED'])],
+            field=models.CharField(choices=[('approved', core.enums.request_enum.RequestStatusEnum['APPROVED']),
+                                            ('rejected', core.enums.request_enum.RequestStatusEnum['REJECTED']),
+                                            ('pending', core.enums.request_enum.RequestStatusEnum['PENDING']),
+                                            ('canceled', core.enums.request_enum.RequestStatusEnum['CANCELED'])],
                                    default=None, max_length=10, null=True),
         ),
     ]

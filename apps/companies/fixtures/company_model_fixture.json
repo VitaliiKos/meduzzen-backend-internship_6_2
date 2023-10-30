@@ -1,0 +1,46 @@
+[
+  {
+    "model": "companies.companymodel",
+    "pk": 1,
+    "fields": {
+      "created_at": "2023-10-19T12:45:32.892Z",
+      "updated_at": "2023-10-19T12:45:32.892Z",
+      "name": "TOSHIBA",
+      "description": "Pavilion",
+      "visible": true
+    }
+  },
+  {
+    "model": "companies.companymodel",
+    "pk": 2,
+    "fields": {
+      "created_at": "2023-10-19T12:45:32.892Z",
+      "updated_at": "2023-10-19T12:45:32.892Z",
+      "name": "TOSHIBA2",
+      "description": "Pavilion",
+      "visible": true
+    }
+  },
+  {
+    "model": "companies.companymodel",
+    "pk": 3,
+    "fields": {
+      "created_at": "2023-10-19T12:45:32.892Z",
+      "updated_at": "2023-10-19T12:45:32.892Z",
+      "name": "TOSHIBA3",
+      "description": "Pavilion",
+      "visible": true
+    }
+  },
+  {
+    "model": "companies.companymodel",
+    "pk": 4,
+    "fields": {
+      "created_at": "2023-10-19T12:45:32.892Z",
+      "updated_at": "2023-10-19T12:45:32.892Z",
+      "name": "TOSHIBA4",
+      "description": "Pavilion",
+      "visible": true
+    }
+  }
+]

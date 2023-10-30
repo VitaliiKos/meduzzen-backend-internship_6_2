@@ -1,6 +1,6 @@
 from enum import StrEnum, auto
 
 
-class ConstantsEnum(StrEnum):
+class InvitationTypeEnum(StrEnum):
     INVITE = auto()
     REQUEST = auto()

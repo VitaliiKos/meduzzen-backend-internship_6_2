@@ -23,6 +23,9 @@ class CompanyModel(TimeStampedModel):
     def is_owner(self, user):
         return self.employeemodel_set.filter(user=user, role=UserEnum.OWNER).exists()
 
+    def is_admin(self, user):
+        return self.employeemodel_set.filter(user=user, role=UserEnum.OWNER).exists()
+
     def has_member(self, user):
         return self.employeemodel_set.filter(user=user, role__isnull=False).exists()
 

@@ -1,7 +1,7 @@
 from enum import StrEnum, auto
 
 
-class RequestEnum(StrEnum):
+class RequestStatusEnum(StrEnum):
     APPROVED = auto()
     REJECTED = auto()
     PENDING = auto()

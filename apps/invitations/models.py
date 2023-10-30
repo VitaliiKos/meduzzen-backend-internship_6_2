@@ -3,8 +3,8 @@ from django.db import models
 
 from apps.companies.models import CompanyModel
 from apps.health_check.models import TimeStampedModel
-from core.enums.invite_enum import InviteEnum
-from core.enums.request_enum import RequestEnum
+from core.enums.invite_enum import InviteStatusEnum
+from core.enums.request_enum import RequestStatusEnum
 
 UserModel = get_user_model()
 
@@ -16,7 +16,7 @@ class InviteModel(TimeStampedModel):
 
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     company = models.ForeignKey(CompanyModel, on_delete=models.CASCADE)
-    status = models.CharField(max_length=10, choices=[(status.value, status) for status in InviteEnum],
+    status = models.CharField(max_length=10, choices=[(status.value, status) for status in InviteStatusEnum],
                               default=None, null=True)
 
 
@@ -27,6 +27,6 @@ class RequestModel(TimeStampedModel):
 
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     company = models.ForeignKey(CompanyModel, on_delete=models.CASCADE)
-    status = models.CharField(max_length=10, choices=[(status.value, status) for status in RequestEnum],
+    status = models.CharField(max_length=10, choices=[(status.value, status) for status in RequestStatusEnum],
                               default=None, null=True)
 

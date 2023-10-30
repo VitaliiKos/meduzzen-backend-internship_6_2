@@ -1,41 +1,40 @@
 from django.contrib.auth import get_user_model
 from rest_framework import status
-from rest_framework.exceptions import APIException
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView, get_object_or_404
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from apps.companies.employee.models import EmployeeModel
-from apps.companies.employee.serializers import EmployeeListSerializer, EmployeeSerializer
 from apps.companies.models import CompanyModel
-from apps.invitations.helper import (
-    get_company_invitation_or_request,
-    get_company_invitations_or_requests_list,
-    get_user_invitation_or_request,
-    get_user_invitations_or_requests_list,
-    update_employee,
-)
+from apps.invitations.helper import select_role, update_employee
+from apps.invitations.models import InviteModel, RequestModel
 from apps.invitations.serializers import InviteModelSerializer, RequestModelSerializer
 from apps.users.models import UserModel as User
-from core.enums.invite_enum import InviteEnum
-from core.enums.request_enum import RequestEnum
-from core.enums.user_enum import UserEnum
-from core.permisions.company_permission import IsCompanyOwner
+from core.enums.invite_enum import InviteStatusEnum
+from core.enums.request_enum import RequestStatusEnum
+from core.permisions.company_permission import IsCompanyInvitationOwner
 
 UserModel: User = get_user_model()
 
 
 class CompanyInviteActionsView(ListCreateAPIView, RetrieveUpdateAPIView):
-    """A view for handling company invitations and requests."""
-
-    queryset = CompanyModel.objects.all()
+    """A view for handling company invitations."""
     serializer_class = InviteModelSerializer
-    permission_classes = (IsAuthenticated, IsCompanyOwner)
+    permission_classes = (IsAuthenticated, IsCompanyInvitationOwner)
+
+    def get_queryset(self):
+        company_id = self.request.query_params.get('company_id')
+        if not company_id:
+            queryset = InviteModel.objects.all()
+        else:
+            queryset = InviteModel.objects.filter(company=company_id, status=InviteStatusEnum.PENDING)
+        return queryset
 
     def create(self, request, *args, **kwargs):
         """Create a company invitation."""
-        user_id = request.data.get('user')
-        company = self.get_object()
+        user_id = self.request.query_params.get('user_id')
+        company_id = self.request.query_params.get('company_id')
+        company = get_object_or_404(CompanyModel, id=company_id)
 
         if company.has_member(user_id):
             return Response({'detail': 'Candidate have already relation to this company'},
@@ -44,52 +43,62 @@ class CompanyInviteActionsView(ListCreateAPIView, RetrieveUpdateAPIView):
         serializers_data = {
             "user": user_id,
             "company": company.id,
-            "status": InviteEnum.PENDING,
+            "status": InviteStatusEnum.PENDING,
         }
         serializer = self.get_serializer(data=serializers_data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def list(self, request, *args, **kwargs):
-        """List company invitations or requests."""
-        company = self.get_object()
-        invitation_status = self.request.query_params.get('invitation_status')
-        company_invitation = get_company_invitations_or_requests_list(company, invitation_status)
-        return self.paginate_and_serialize(company_invitation, EmployeeListSerializer)
-
     def update(self, request, *args, **kwargs):
-        """Update a company invitation or request."""
-        user_id = request.data.get('user_id')
-        company = self.get_object()
-        invitation_status = self.request.data.get('invitation_status')
-        employee = get_object_or_404(EmployeeModel, company=company.id, user=user_id)
-        invite = get_company_invitation_or_request(employee, invitation_status)
-        if not invite or invite.status != InviteEnum.PENDING.value:
-            return Response({'detail': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
+        """Revoke a company invitation."""
+        invite = self.get_object()
+        employee = get_object_or_404(EmployeeModel, invite_status_id=invite.id,
+                                     invite_status__status=InviteStatusEnum.PENDING.value)
 
-        employee = update_employee(employee, invitation_status, invite)
+        updated_invite = update_employee(employee, InviteStatusEnum.REVOKED.value, invite)
 
-        serializer = EmployeeSerializer(employee)
+        serializer = InviteModelSerializer(updated_invite)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def paginate_and_serialize(self, data, serializer_class):
-        page = self.paginate_queryset(data)
-        serializer = serializer_class(page, many=True)
-        return self.get_paginated_response(serializer.data)
+
+class CompanyRequestActionsView(ListAPIView, RetrieveUpdateAPIView):
+    """A view for handling company requests."""
+    serializer_class = RequestModelSerializer
+    permission_classes = (IsAuthenticated, IsCompanyInvitationOwner)
+
+    def get_queryset(self):
+        company_id = self.request.query_params.get('company_id')
+        queryset = RequestModel.objects.filter(company=company_id, status=RequestStatusEnum.PENDING)
+        return queryset
+
+    def update(self, request, *args, **kwargs):
+        """Approve or reject a company request."""
+        user_request = self.get_object()
+        new_request_status = self.request.query_params.get('status')
+        employee = get_object_or_404(EmployeeModel, request_status_id=user_request.id)
+        role = select_role(new_request_status)
+
+        updated_request = update_employee(employee, new_request_status, user_request, role)
+
+        serializer = self.serializer_class(updated_request)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class UserRequestActionsView(ListCreateAPIView):
+class UserRequestActionsView(ListCreateAPIView, RetrieveUpdateAPIView):
     """A view for handling user requests to join a company."""
-
-    queryset = CompanyModel.objects.all()
     serializer_class = RequestModelSerializer
     permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        queryset = RequestModel.objects.filter(user=self.request.user, status=RequestStatusEnum.PENDING)
+        return queryset
 
     def create(self, request, *args, **kwargs):
         """Create a user request to join a company."""
         user = self.request.user.id
-        company = self.get_object()
+        company_id = self.request.query_params.get('company_id')
+        company = get_object_or_404(CompanyModel, id=company_id)
         if company.has_member(user):
             return Response({'detail': 'Candidate have already relation to this company'},
                             status=status.HTTP_400_BAD_REQUEST)
@@ -97,53 +106,42 @@ class UserRequestActionsView(ListCreateAPIView):
         serializers_data = {
             "user": user,
             "company": company.id,
-            "status": RequestEnum.PENDING
+            "status": RequestStatusEnum.PENDING
         }
         serializer = self.get_serializer(data=serializers_data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def list(self, request, *args, **kwargs):
-        """List user invitations and requests."""
-        invitation_status = self.request.query_params.get('invitation_status')
-        user_invitation = get_user_invitations_or_requests_list(user=request.user.id,
-                                                                invitation_status=invitation_status)
-        page = self.paginate_queryset(user_invitation)
-        serializer = EmployeeSerializer(page, many=True)
-        return self.get_paginated_response(serializer.data)
+    def update(self, request, *args, **kwargs):
+        """Cancel a user's request."""
+
+        user_request = get_object_or_404(self.get_queryset(), pk=kwargs['pk'])
+        employee = get_object_or_404(EmployeeModel, request_status=user_request.id)
+
+        updated_request = update_employee(employee, RequestStatusEnum.CANCELED.value, user_request)
+
+        serializer = InviteModelSerializer(updated_request)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class UserInvitationDetailActionsView(RetrieveUpdateAPIView):
+class UserInviteActionView(ListAPIView, RetrieveUpdateAPIView):
     """A view for handling user invitation details and responses."""
-    serializer_class = EmployeeSerializer
+    serializer_class = InviteModelSerializer
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        user = self.request.user
-        invitation_status = self.request.data.get('invitation_status')
-        if invitation_status not in [InviteEnum.ACCEPTED, InviteEnum.DECLINED, RequestEnum.CANCELED]:
-            raise APIException("Bad Request. Invalid invitation_status.")
-
-        filter_kwargs = {
-            'user': user,
-            'role': UserEnum.CANDIDATE
-        }
-        if invitation_status in [InviteEnum.ACCEPTED, InviteEnum.DECLINED]:
-            filter_kwargs['invite_status__isnull'] = False
-        else:
-            filter_kwargs['request_status__isnull'] = False
-        invitations = EmployeeModel.objects.filter(**filter_kwargs)
-        return invitations
+        queryset = InviteModel.objects.filter(user=self.request.user.id, status=InviteStatusEnum.PENDING.value)
+        return queryset
 
     def update(self, request, *args, **kwargs):
-        """Update a user invitation or request."""
-        invitation_status = self.request.data.get('invitation_status')
+        """Accept or decline invite."""
+        new_request_status = self.request.query_params.get('status')
+        invite = get_object_or_404(self.get_queryset(), pk=kwargs['pk'])
+        employee = get_object_or_404(EmployeeModel, invite_status=invite.id)
+        role = select_role(new_request_status)
 
-        employee = self.get_object()
-        user_invitation = get_user_invitation_or_request(employee, invitation_status)
+        updated_request = update_employee(employee, new_request_status, invite, role)
 
-        employee = update_employee(employee, invitation_status, user_invitation)
-
-        serializer = EmployeeSerializer(employee)
+        serializer = self.serializer_class(updated_request)
         return Response(serializer.data, status=status.HTTP_200_OK)

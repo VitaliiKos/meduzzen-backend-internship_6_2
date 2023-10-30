@@ -1,11 +1,15 @@
 from django.urls import path
 
-from .views import CompanyInviteActionsView, UserInvitationDetailActionsView, UserRequestActionsView
+from .views import CompanyInviteActionsView, CompanyRequestActionsView, UserInviteActionView, UserRequestActionsView
 
 urlpatterns = [
+    path('/invite', CompanyInviteActionsView.as_view(), name='invitation_list'),
     path('/invite/<int:pk>', CompanyInviteActionsView.as_view(), name='invitation_action'),
+    path('/request', CompanyRequestActionsView.as_view(), name='request_list'),
+    path('/request/<int:pk>', CompanyRequestActionsView.as_view(), name='request_action'),
 
-    path('/request', UserRequestActionsView.as_view(), name='request_list'),
-    path('/request/to_company/<int:pk>', UserRequestActionsView.as_view(), name='request_create_actions'),
-    path('/request/<int:pk>', UserInvitationDetailActionsView.as_view(), name='request_detail_actions'),
+    path('/user_request', UserRequestActionsView.as_view(), name='user_request_list'),
+    path('/user_request/<int:pk>', UserRequestActionsView.as_view(), name='user_request_action'),
+    path('/user_invites', UserInviteActionView.as_view(), name='user_invites_list'),
+    path('/user_invites/<int:pk>', UserInviteActionView.as_view(), name='user_invites_action'),
 ]
