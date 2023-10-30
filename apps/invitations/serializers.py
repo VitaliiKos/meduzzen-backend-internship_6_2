@@ -17,8 +17,7 @@ class InviteModelSerializer(ModelSerializer):
         """Create a company invitation and associate it with an employee."""
         user = validated_data.pop('user')
         company = validated_data.pop('company')
-        invite_status = validated_data.pop('status')
-        data = {'user': user, 'company': company, 'status': invite_status}
+        data = {'user': user, 'company': company}
         company_invite = InviteModel.objects.create(**data)
 
         employee, created = EmployeeModel.objects.get_or_create(
@@ -48,8 +47,7 @@ class RequestModelSerializer(ModelSerializer):
         """Create a user request to join a company and associate it with an employee."""
         user = validated_data.pop('user')
         company = validated_data.pop('company')
-        request_status = validated_data.pop('status')
-        data = {'user': user, 'company': company, 'status': request_status}
+        data = {'user': user, 'company': company}
         user_request = RequestModel.objects.create(**data)
 
         employee, created = EmployeeModel.objects.get_or_create(

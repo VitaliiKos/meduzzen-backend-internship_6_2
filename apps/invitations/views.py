@@ -4,9 +4,10 @@ from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpda
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from apps.companies.employee.helper import update_employee
 from apps.companies.employee.models import EmployeeModel
 from apps.companies.models import CompanyModel
-from apps.invitations.helper import select_role, update_employee
+from apps.invitations.helper import select_role
 from apps.invitations.models import InviteModel, RequestModel
 from apps.invitations.serializers import InviteModelSerializer, RequestModelSerializer
 from apps.users.models import UserModel as User
@@ -43,7 +44,6 @@ class CompanyInviteActionsView(ListCreateAPIView, RetrieveUpdateAPIView):
         serializers_data = {
             "user": user_id,
             "company": company.id,
-            "status": InviteStatusEnum.PENDING,
         }
         serializer = self.get_serializer(data=serializers_data)
         serializer.is_valid(raise_exception=True)
@@ -106,7 +106,6 @@ class UserRequestActionsView(ListCreateAPIView, RetrieveUpdateAPIView):
         serializers_data = {
             "user": user,
             "company": company.id,
-            "status": RequestStatusEnum.PENDING
         }
         serializer = self.get_serializer(data=serializers_data)
         serializer.is_valid(raise_exception=True)

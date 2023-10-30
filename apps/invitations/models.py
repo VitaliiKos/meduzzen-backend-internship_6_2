@@ -17,7 +17,7 @@ class InviteModel(TimeStampedModel):
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     company = models.ForeignKey(CompanyModel, on_delete=models.CASCADE)
     status = models.CharField(max_length=10, choices=[(status.value, status) for status in InviteStatusEnum],
-                              default=None, null=True)
+                              default=InviteStatusEnum.PENDING.value, null=True)
 
 
 class RequestModel(TimeStampedModel):
@@ -28,5 +28,5 @@ class RequestModel(TimeStampedModel):
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     company = models.ForeignKey(CompanyModel, on_delete=models.CASCADE)
     status = models.CharField(max_length=10, choices=[(status.value, status) for status in RequestStatusEnum],
-                              default=None, null=True)
+                              default=RequestStatusEnum.PENDING.value, null=True)
 
