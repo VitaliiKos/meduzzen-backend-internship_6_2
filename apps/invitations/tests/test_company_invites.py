@@ -12,7 +12,7 @@ UserModel: User = get_user_model()
 
 
 class CompanyInviteActionsView(BaseTestCase):
-    """Test case for the CompanyInviteActionsView, which handles various company invite and request actions."""
+    """Test case for the CompanyInviteActionsView, which handles various company invite actions."""
 
     def setUp(self):
         user = UserModel.objects.get(pk=1)
