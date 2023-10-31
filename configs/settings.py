@@ -43,11 +43,14 @@ INSTALLED_APPS = [
     'social_django',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'rest_framework.authtoken',
 
     # my apps
     'apps.health_check',
     'apps.users',
     'apps.companies',
+    'apps.companies.employee',
+    'apps.invitations',
 
 ]
 

@@ -3,7 +3,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.permissions import IsAuthenticated
 
 from core.enums.company_helper_enum import CompanyHelperEnum
-from core.permisions.is_owner import IsOwnerPermission
+from core.permisions.company_permission import IsCompanyOwnerOrReadOnly
 
 from .models import CompanyModel
 from .models import UserModel as User
@@ -17,7 +17,7 @@ class CompanyView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
     queryset = CompanyModel.objects.all()
     serializer_class = CompanySerializer
     serializer_class_for_current_user = CompaniesForCurrentUserSerializer
-    permission_classes = (IsAuthenticated, IsOwnerPermission)
+    permission_classes = (IsAuthenticated, IsCompanyOwnerOrReadOnly)
 
     def get_serializer_class(self):
 

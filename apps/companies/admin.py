@@ -7,7 +7,7 @@ class CompanyModelAdmin(admin.ModelAdmin):
     """Admin configuration for CompanyModel."""
 
     verbose_name_plural = "Companies"
-
+    list_display = ('name', 'description', 'visible')
     search_fields = ('name', 'visible')
 
     list_filter = ('visible',)

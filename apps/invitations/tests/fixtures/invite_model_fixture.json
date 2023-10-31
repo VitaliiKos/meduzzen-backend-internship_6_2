@@ -1,0 +1,24 @@
+[
+  {
+    "model": "invitations.invitemodel",
+    "pk": 1,
+    "fields": {
+      "created_at": "2023-10-19T14:43:14.570Z",
+      "updated_at": "2023-10-19T14:43:14.570Z",
+      "user": 2,
+      "company": 1,
+      "status": "pending"
+    }
+  },
+  {
+    "model": "invitations.invitemodel",
+    "pk": 2,
+    "fields": {
+      "created_at": "2023-10-19T14:43:14.570Z",
+      "updated_at": "2023-10-19T14:43:14.570Z",
+      "user": 3,
+      "company": 1,
+      "status": "pending"
+    }
+  }
+]

@@ -1,7 +1,8 @@
 from enum import StrEnum, auto
 
 
-class InvitationEnum(StrEnum):
+class InviteStatusEnum(StrEnum):
     ACCEPTED = auto()
-    REJECTED = auto()
+    DECLINED = auto()
     PENDING = auto()
+    REVOKED = auto()

@@ -1,0 +1,92 @@
+[
+  {
+    "model": "users.usermodel",
+    "pk": 1,
+    "fields": {
+      "last_login": "2023-10-17T12:58:18.331Z",
+      "is_superuser": false,
+      "created_at": "2023-10-01T20:20:44.203Z",
+      "updated_at": "2023-10-01T20:20:44.203Z",
+      "email": "User1@ukr.net",
+      "password": "P@$$word1",
+      "first_name": "Kokos",
+      "last_name": "Kos",
+      "is_active": true,
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.usermodel",
+    "pk": 2,
+    "fields": {
+      "last_login": "2023-10-17T12:58:18.331Z",
+      "is_superuser": false,
+      "created_at": "2023-10-01T20:20:44.203Z",
+      "updated_at": "2023-10-01T20:20:44.203Z",
+      "email": "User2@ukr.net",
+      "password": "pbkdf2_sha256$600000$NcwBitNEkAT0obBooFjHUA$J2mM4RQTqL5jYne9kDlzm8vjlHLnwW33XfHdlf9W+40=",
+      "first_name": "Kokos",
+      "last_name": "Kos",
+      "is_active": true,
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.usermodel",
+    "pk": 3,
+    "fields": {
+      "last_login": "2023-10-17T12:58:18.331Z",
+      "is_superuser": false,
+      "created_at": "2023-10-01T20:20:44.203Z",
+      "updated_at": "2023-10-01T20:20:44.203Z",
+      "email": "User3@ukr.net",
+      "password": "pbkdf2_sha256$600000$NcwBitNEkAT0obBooFjHUA$J2mM4RQTqL5jYne9kDlzm8vjlHLnwW33XfHdlf9W+40=",
+      "first_name": "Kokos",
+      "last_name": "Kos",
+      "is_active": true,
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.usermodel",
+    "pk": 4,
+    "fields": {
+      "last_login": "2023-10-17T12:58:18.331Z",
+      "is_superuser": false,
+      "created_at": "2023-10-01T20:20:44.203Z",
+      "updated_at": "2023-10-01T20:20:44.203Z",
+      "email": "User4@ukr.net",
+      "password": "pbkdf2_sha256$600000$NcwBitNEkAT0obBooFjHUA$J2mM4RQTqL5jYne9kDlzm8vjlHLnwW33XfHdlf9W+40=",
+      "first_name": "Kokos",
+      "last_name": "Kos",
+      "is_active": true,
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.usermodel",
+    "pk": 5,
+    "fields": {
+      "last_login": "2023-10-17T12:58:18.331Z",
+      "is_superuser": false,
+      "created_at": "2023-10-01T20:20:44.203Z",
+      "updated_at": "2023-10-01T20:20:44.203Z",
+      "email": "User5@ukr.net",
+      "password": "pbkdf2_sha256$600000$NcwBitNEkAT0obBooFjHUA$J2mM4RQTqL5jYne9kDlzm8vjlHLnwW33XfHdlf9W+40=",
+      "first_name": "Kokos",
+      "last_name": "Kos",
+      "is_active": true,
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]
