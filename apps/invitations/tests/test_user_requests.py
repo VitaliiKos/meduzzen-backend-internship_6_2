@@ -12,7 +12,7 @@ UserModel: User = get_user_model()
 
 
 class UserRequestActionsViewTestCase(BaseTestCase):
-    """Test case for the UserRequestActionsView, which handles various user request and invitation actions."""
+    """Test case for the UserRequestActionsView, which handles various user request actions."""
 
     def setUp(self):
         user = UserModel.objects.get(pk=2)

@@ -5,3 +5,4 @@ class UserEnum(StrEnum):
     OWNER = auto()
     CANDIDATE = auto()
     MEMBER = auto()
+    ADMIN = auto()

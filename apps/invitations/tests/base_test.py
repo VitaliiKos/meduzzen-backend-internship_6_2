@@ -11,6 +11,7 @@ UserModel: User = get_user_model()
 
 class BaseTestCase(APITestCase):
     """Base test case for common setup and utility functions."""
+
     fixtures = ["apps/companies/tests/fixtures/company_model_fixture",
                 "apps/companies/employee/tests/fixtures/employee_model_fixture",
                 "apps/invitations/tests/fixtures/invite_model_fixture.json",

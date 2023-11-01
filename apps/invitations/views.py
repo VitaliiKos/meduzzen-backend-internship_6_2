@@ -13,15 +13,16 @@ from apps.invitations.serializers import InviteModelSerializer, RequestModelSeri
 from apps.users.models import UserModel as User
 from core.enums.invite_enum import InviteStatusEnum
 from core.enums.request_enum import RequestStatusEnum
-from core.permisions.company_permission import IsCompanyInvitationOwner
+from core.permisions.company_permission import IsCompanyOwner
 
 UserModel: User = get_user_model()
 
 
 class CompanyInviteActionsView(ListCreateAPIView, RetrieveUpdateAPIView):
     """A view for handling company invitations."""
+
     serializer_class = InviteModelSerializer
-    permission_classes = (IsAuthenticated, IsCompanyInvitationOwner)
+    permission_classes = (IsAuthenticated, IsCompanyOwner)
 
     def get_queryset(self):
         company_id = self.request.query_params.get('company_id')
@@ -64,8 +65,9 @@ class CompanyInviteActionsView(ListCreateAPIView, RetrieveUpdateAPIView):
 
 class CompanyRequestActionsView(ListAPIView, RetrieveUpdateAPIView):
     """A view for handling company requests."""
+
     serializer_class = RequestModelSerializer
-    permission_classes = (IsAuthenticated, IsCompanyInvitationOwner)
+    permission_classes = (IsAuthenticated, IsCompanyOwner)
 
     def get_queryset(self):
         company_id = self.request.query_params.get('company_id')
@@ -87,6 +89,7 @@ class CompanyRequestActionsView(ListAPIView, RetrieveUpdateAPIView):
 
 class UserRequestActionsView(ListCreateAPIView, RetrieveUpdateAPIView):
     """A view for handling user requests to join a company."""
+
     serializer_class = RequestModelSerializer
     permission_classes = (IsAuthenticated,)
 
@@ -114,7 +117,6 @@ class UserRequestActionsView(ListCreateAPIView, RetrieveUpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         """Cancel a user's request."""
-
         user_request = get_object_or_404(self.get_queryset(), pk=kwargs['pk'])
         employee = get_object_or_404(EmployeeModel, request_status=user_request.id)
 
@@ -126,6 +128,7 @@ class UserRequestActionsView(ListCreateAPIView, RetrieveUpdateAPIView):
 
 class UserInviteActionView(ListAPIView, RetrieveUpdateAPIView):
     """A view for handling user invitation details and responses."""
+
     serializer_class = InviteModelSerializer
     permission_classes = (IsAuthenticated,)
 
