@@ -27,7 +27,7 @@ class EmployeeModel(TimeStampedModel):
     invite_status = models.ForeignKey(InviteModel, on_delete=models.CASCADE, null=True, blank=True)
     request_status = models.ForeignKey(RequestModel, on_delete=models.CASCADE, null=True, blank=True)
 
-    def change_employee_role(self, new_role):
+    def toggle_employee_role(self, new_role):
         role_mapping = {
             UserEnum.MEMBER.value: UserEnum.ADMIN.value,
             UserEnum.ADMIN.value: UserEnum.MEMBER.value

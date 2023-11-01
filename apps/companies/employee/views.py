@@ -68,7 +68,7 @@ class AdminActionView(ListAPIView, UpdateAPIView):
 
         employee = get_object_or_404(EmployeeModel, user=member_id, company=company)
 
-        if employee.change_employee_role(new_role):
+        if employee.toggle_employee_role(new_role):
             serializer = self.serializer_class(employee)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
