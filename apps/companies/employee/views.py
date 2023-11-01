@@ -36,7 +36,7 @@ class EmployeeActionView(ListAPIView, RetrieveUpdateAPIView):
         elif not user_id and not company.is_owner(request.user):
             user_to_leave = request.user.id
         else:
-            return Response({"detail": "Invalid credentials"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"detail": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
         employee = get_object_or_404(EmployeeModel, user=user_to_leave, company=company,
                                      role__in=[UserEnum.MEMBER.value, UserEnum.ADMIN.value])
@@ -52,7 +52,6 @@ class AdminActionView(ListAPIView, UpdateAPIView):
     - Only the owner of the company can change an employee's role from 'member' to 'admin' or vice versa.
     """
 
-    queryset = EmployeeModel.objects.all()
     serializer_class = EmployeeListSerializer
     permission_classes = (IsAuthenticated, IsCompanyOwner)
 
@@ -65,19 +64,13 @@ class AdminActionView(ListAPIView, UpdateAPIView):
         new_role = self.request.query_params.get('role')
         member_id = self.request.query_params.get('user_id')
         company_id = self.request.query_params.get('company_id')
-        valid_roles = [UserEnum.MEMBER.value, UserEnum.ADMIN.value]
-        role_mapping = {
-            UserEnum.MEMBER.value: UserEnum.ADMIN.value,
-            UserEnum.ADMIN.value: UserEnum.MEMBER.value
-        }
-        old_role = role_mapping.get(new_role)
-        if new_role not in valid_roles or old_role is None:
-            return Response({"detail": "Incorrect role"}, status=status.HTTP_400_BAD_REQUEST)
-
         company = get_object_or_404(CompanyModel, id=company_id)
-        employee = get_object_or_404(EmployeeModel, user=member_id, company=company, role=old_role)
 
-        employee.role = new_role
-        employee.save()
-        serializer = EmployeeSerializer(employee)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        employee = get_object_or_404(EmployeeModel, user=member_id, company=company)
+
+        if employee.change_employee_role(new_role):
+            serializer = self.serializer_class(employee)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"detail": "Incorrect role or employee does not have the specified role."},
+                            status=status.HTTP_400_BAD_REQUEST)

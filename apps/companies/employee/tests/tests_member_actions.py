@@ -27,14 +27,14 @@ class EmployeeActionViewTest(BaseTestCase):
         url = reverse('employee_action')
         response = self.client.put(url + '?' + '&'.join([f"{key}={value}" for key, value in query_params.items()]))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(response.data['role'], None)
+        self.assertIsNone(response.data['role'])
 
     def test_owner_cannot_leave_company(self):
         """Test that the owner cannot leave the company."""
         query_params = {"company_id": self.company.id}
         url = reverse('employee_action')
         response = self.client.put(url + '?' + '&'.join([f"{key}={value}" for key, value in query_params.items()]))
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_only_owner_can_remove_member(self):
         """Test that only the owner can remove a member from the company."""
