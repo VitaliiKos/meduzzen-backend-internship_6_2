@@ -9,9 +9,12 @@ from core.permisions.quizz_permission import QuizPermission
 
 
 class QuizView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
-    queryset = QuizModel.objects.all()
     serializer_class = QuizSerializer
     permission_classes = (IsAuthenticated, QuizPermission)
+
+    def get_queryset(self):
+        company_id = self.request.query_params.get('company_id')
+        return QuizModel.objects.filter(company=company_id)
 
     def get(self, request, *args, **kwargs):
 
