@@ -24,6 +24,9 @@ class QuizSerializer(ModelSerializer):
 
         quiz = QuizModel.objects.create(**validated_data)
 
+        question_objects = []
+        answers_data = None
+
         for question_data in questions:
             answers_data = question_data.pop('answers')
             if len(answers_data) < 2:
@@ -34,9 +37,15 @@ class QuizSerializer(ModelSerializer):
                 raise serializers.ValidationError({'detail': 'Each question must have exactly one correct answer'})
 
             question_data['quiz'] = quiz
+            question_objects.append(QuestionModel(**question_data))
 
-            question = QuestionModel.objects.create(**question_data)
-            for answer in answers_data:
+        questions_bulk = QuestionModel.objects.bulk_create(question_objects)
+
+        for i, question in enumerate(questions_bulk):
+            for answer in answers_data[i * len(answers_data):(i + 1) * len(answers_data)]:
                 answer['question'] = question
-                AnswerModel.objects.create(**answer)
+
+        answer_objects = [AnswerModel(**answer_data) for answer_data in answers_data]
+        AnswerModel.objects.bulk_create(answer_objects)
+
         return quiz
