@@ -15,32 +15,32 @@ def validate_correct_answers(answers):
         raise ValidationError({'detail': 'Each question must have at least one correct answer.'})
 
 
-def create_answer(questions, answers):
-    answers_list = []
-    for i, question in enumerate(questions):
-        for answer in answers[i]:
-            answer['question'] = question
-            answers_list.append(answer)
-    answer_objects = [AnswerModel(**answer) for answer in answers_list]
-    AnswerModel.objects.bulk_create(answer_objects)
+# def create_answer(questions, answers):
+#     answers_list = []
+#     for i, question in enumerate(questions):
+#         for answer in answers[i]:
+#             answer['question'] = question
+#             answers_list.append(answer)
+#     answer_objects = [AnswerModel(**answer) for answer in answers_list]
+#     AnswerModel.objects.bulk_create(answer_objects)
 
 
-def create_questions(quiz, questions):
-    question_objects = []
-    answer_data_objects = []
+# def create_questions(quiz, questions):
+#     question_objects = []
+#     answer_data_objects = []
+#
+#     for question_data in questions:
+#         answers_data = question_data.pop('answers')
+#         validate_min_items(answers_data, {'detail': 'Each question must have at least two answer options'})
+#         validate_correct_answers(answers_data)
+#         answer_data_objects.append(answers_data)
+#
+#         question_data['quiz'] = quiz
+#         question_objects.append(QuestionModel(**question_data))
+#     questions_bulk = QuestionModel.objects.bulk_create(question_objects)
+#     create_answer(questions_bulk, answer_data_objects)
 
-    for question_data in questions:
-        answers_data = question_data.pop('answers')
-        validate_min_items(answers_data, {'detail': 'Each question must have at least two answer options'})
-        validate_correct_answers(answers_data)
-        answer_data_objects.append(answers_data)
-
-        question_data['quiz'] = quiz
-        question_objects.append(QuestionModel(**question_data))
-    questions_bulk = QuestionModel.objects.bulk_create(question_objects)
-    create_answer(questions_bulk, answer_data_objects)
-
-    return questions_bulk
+    # return questions_bulk
 
 
 def answer_update_permission(request, instance):
