@@ -14,7 +14,6 @@ class QuizPermission(permissions.BasePermission):
     """
 
     def has_object_permission(self, request, view, obj):
-        print(obj.__dict__)
         if request.method in permissions.SAFE_METHODS:
             return True
 
@@ -27,4 +26,3 @@ class QuizPermission(permissions.BasePermission):
         elif isinstance(obj, AnswerModel):
             return obj.question.quiz.company.is_owner(request.user.id) or obj.question.quiz.company.is_admin(
                 request.user.id)
-
