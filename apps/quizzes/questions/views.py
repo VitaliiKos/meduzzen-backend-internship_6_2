@@ -3,6 +3,7 @@ from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView,
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from apps.quizzes.helper import question_destroy_permission
 from apps.quizzes.models import QuizModel
 from apps.quizzes.questions.models import QuestionModel
 from apps.quizzes.questions.serlalizers import QuestionSerializer
@@ -22,10 +23,8 @@ class QuizQuestionView(CreateAPIView, RetrieveUpdateDestroyAPIView):
         serializer.save(quiz=quiz)
 
     def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
-        question_count = QuestionModel.objects.filter(quiz=instance.quiz).count()
-        if question_count <= 2:
-            return Response({"detail": "There must be at least two questions."}, status=status.HTTP_400_BAD_REQUEST)
+        question = self.get_object()
+        question_destroy_permission(question)
 
-        self.perform_destroy(instance)
+        self.perform_destroy(question)
         return Response(status=status.HTTP_204_NO_CONTENT)

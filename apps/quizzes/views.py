@@ -14,7 +14,9 @@ class QuizView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         company_id = self.request.query_params.get('company_id')
-        return QuizModel.objects.filter(company=company_id)
+        if company_id:
+            return QuizModel.objects.filter(company=company_id)
+        return QuizModel.objects.all()
 
     def get(self, request, *args, **kwargs):
 
