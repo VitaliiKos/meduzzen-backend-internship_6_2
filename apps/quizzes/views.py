@@ -1,7 +1,8 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
+from rest_framework import status
+from rest_framework.exceptions import PermissionDenied
 from apps.companies.models import CompanyModel
 from apps.quizzes.models import QuizModel
 from apps.quizzes.serializers import QuizSerializer
@@ -9,6 +10,7 @@ from core.permisions.quizz_permission import QuizPermission
 
 
 class QuizView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
+
     serializer_class = QuizSerializer
     permission_classes = (IsAuthenticated, QuizPermission)
 
@@ -16,7 +18,7 @@ class QuizView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
         company_id = self.request.query_params.get('company_id')
         if company_id:
             return QuizModel.objects.filter(company=company_id)
-        return QuizModel.objects.all()
+        raise PermissionDenied()
 
     def get(self, request, *args, **kwargs):
 
@@ -33,8 +35,8 @@ class QuizView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
         serializer.save(user=user, company=company)
 
     def update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        quiz = self.get_object()
+        serializer = self.get_serializer(quiz, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 

@@ -42,6 +42,7 @@ class QuizSerializer(ModelSerializer):
         self.create_answer(questions_bulk, answer_data_objects)
 
         return questions_bulk
+
     def create_answer(self, questions, answers):
         answers_list = []
         for i, question in enumerate(questions):
