@@ -1,9 +1,7 @@
 from rest_framework import permissions
 
 from apps.companies.models import CompanyModel
-from apps.quizzes.answers.models import AnswerModel
-from apps.quizzes.models import QuizModel
-from apps.quizzes.questions.models import QuestionModel
+from apps.quizzes.models import AnswerModel, QuestionModel, QuizModel
 
 
 class QuizPermission(permissions.BasePermission):
