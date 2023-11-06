@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'apps.companies',
     'apps.companies.employee',
     'apps.invitations',
+    'apps.quizzes',
 
 ]
 
