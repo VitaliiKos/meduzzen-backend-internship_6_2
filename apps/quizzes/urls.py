@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import include, path
 
 from .views import QuizAnswerView, QuizQuestionView, QuizView
 
@@ -11,5 +11,7 @@ urlpatterns = [
 
     path('/answer', QuizAnswerView.as_view(), name='answer_create'),
     path('/answer/<int:pk>', QuizAnswerView.as_view(), name='answer_detail'),
+
+    path('/workflow', include('apps.quizzes.quiz_workflow.urls')),
 
 ]
