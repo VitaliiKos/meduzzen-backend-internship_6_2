@@ -1,7 +1,7 @@
 from django.db import transaction
 from rest_framework.serializers import ModelSerializer
-
 from apps.quizzes.models import AnswerModel, QuestionModel
+from apps.quizzes.quiz_workflow.helper import save_quiz_vote_to_redis
 from apps.quizzes.quiz_workflow.models import QuizResultModel
 from core.enums.quiz_result_enum import QuizResultEnum
 
@@ -61,5 +61,11 @@ class QuizResultSerializer(ModelSerializer):
             quiz_result.attempt) < len(questions) else QuizResultEnum.COMPLETED.value
         quiz_result.score = quiz_result.total_answer / total_questions * 100 if total_questions > 0 else 0.0
         quiz_result.save()
+
+        for key, value in quiz_result.attempt.items():
+            correct_answer_ids = list(
+                AnswerModel.objects.filter(question=key, is_correct=True).values_list('id', flat=True))
+            save_quiz_vote_to_redis(user_id=user.id, company_id=company.id, quiz_id=quiz.id, question_id=key,
+                                    user_answer=value, is_correct=value == correct_answer_ids)
 
         return quiz_result
