@@ -1,5 +1,5 @@
 from model_bakery import baker
-from rest_framework.test import APITestCase
+from rest_framework.test import APITestCase, override_settings
 
 from apps.companies.employee.models import EmployeeModel
 from apps.companies.models import CompanyModel
@@ -8,6 +8,7 @@ from apps.users.models import UserModel
 from core.enums.user_enum import UserEnum
 
 
+@override_settings(CACHES={"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache"}})
 class BaseTestCase(APITestCase):
     """Base test case for common setup and utility functions."""
 
