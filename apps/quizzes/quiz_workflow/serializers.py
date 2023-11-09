@@ -63,10 +63,12 @@ class QuizResultSerializer(ModelSerializer):
         quiz_result.score = quiz_result.total_answer / total_questions * 100 if total_questions > 0 else 0.0
         quiz_result.save()
 
-        for key, value in quiz_result.attempt.items():
+        for user_question_id, user_answer_options in quiz_result.attempt.items():
             correct_answer_ids = list(
-                AnswerModel.objects.filter(question=key, is_correct=True).values_list('id', flat=True))
-            save_quiz_vote_to_redis(user_id=user.id, company_id=company.id, quiz_id=quiz.id, question_id=key,
-                                    user_answer=value, is_correct=value == correct_answer_ids)
+                AnswerModel.objects.filter(question=user_question_id, is_correct=True).values_list('id', flat=True))
+
+            save_quiz_vote_to_redis(user_id=user.id, company_id=company.id, quiz_id=quiz.id,
+                                    question_id=user_question_id, user_answer=user_answer_options,
+                                    is_correct=user_answer_options == correct_answer_ids)
 
         return quiz_result
