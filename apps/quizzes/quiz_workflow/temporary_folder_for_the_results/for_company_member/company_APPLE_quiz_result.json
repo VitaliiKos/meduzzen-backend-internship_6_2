@@ -1,0 +1,362 @@
+[
+  {
+    "id": 266,
+    "user": 13,
+    "company": 5,
+    "quiz": 8,
+    "score": 83.18,
+    "status": "started",
+    "created_at": "2023-11-10T12:27:08.197Z",
+    "updated_at": "2023-11-10T12:27:08.202Z"
+  },
+  {
+    "id": 265,
+    "user": 13,
+    "company": 5,
+    "quiz": 8,
+    "score": 66.67,
+    "status": "completed",
+    "created_at": "2023-11-10T12:23:42.095Z",
+    "updated_at": "2023-11-10T12:23:42.099Z"
+  },
+  {
+    "id": 264,
+    "user": 13,
+    "company": 5,
+    "quiz": 8,
+    "score": 100.0,
+    "status": "completed",
+    "created_at": "2023-11-10T12:23:17.438Z",
+    "updated_at": "2023-11-10T12:23:17.442Z"
+  },
+  {
+    "id": 263,
+    "user": 13,
+    "company": 5,
+    "quiz": 8,
+    "score": 83.84,
+    "status": "completed",
+    "created_at": "2023-11-10T12:14:21.138Z",
+    "updated_at": "2023-11-10T12:14:21.142Z"
+  },
+  {
+    "id": 262,
+    "user": 13,
+    "company": 5,
+    "quiz": 8,
+    "score": 83.33,
+    "status": "completed",
+    "created_at": "2023-11-10T12:12:02.207Z",
+    "updated_at": "2023-11-10T12:12:02.211Z"
+  },
+  {
+    "id": 259,
+    "user": 13,
+    "company": 5,
+    "quiz": 1,
+    "score": 83.87,
+    "status": "completed",
+    "created_at": "2023-11-10T10:43:21.310Z",
+    "updated_at": "2023-11-10T10:43:21.338Z"
+  },
+  {
+    "id": 255,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 84.44,
+    "status": "completed",
+    "created_at": "2023-11-09T11:49:25.654Z",
+    "updated_at": "2023-11-09T11:49:25.660Z"
+  },
+  {
+    "id": 254,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 83.91,
+    "status": "completed",
+    "created_at": "2023-11-09T11:02:20.358Z",
+    "updated_at": "2023-11-09T11:02:20.362Z"
+  },
+  {
+    "id": 253,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 83.33,
+    "status": "completed",
+    "created_at": "2023-11-09T10:48:27.392Z",
+    "updated_at": "2023-11-09T10:48:27.412Z"
+  },
+  {
+    "id": 252,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 82.72,
+    "status": "completed",
+    "created_at": "2023-11-09T08:22:50.711Z",
+    "updated_at": "2023-11-09T08:22:50.718Z"
+  },
+  {
+    "id": 251,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 82.05,
+    "status": "completed",
+    "created_at": "2023-11-09T08:22:14.767Z",
+    "updated_at": "2023-11-09T08:22:14.771Z"
+  },
+  {
+    "id": 250,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 81.33,
+    "status": "completed",
+    "created_at": "2023-11-09T08:19:46.499Z",
+    "updated_at": "2023-11-09T08:19:46.502Z"
+  },
+  {
+    "id": 247,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 80.56,
+    "status": "completed",
+    "created_at": "2023-11-09T06:46:09.263Z",
+    "updated_at": "2023-11-09T06:46:09.268Z"
+  },
+  {
+    "id": 245,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 79.71,
+    "status": "completed",
+    "created_at": "2023-11-08T21:46:55.285Z",
+    "updated_at": "2023-11-08T21:46:55.290Z"
+  },
+  {
+    "id": 243,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 78.79,
+    "status": "completed",
+    "created_at": "2023-11-08T20:37:10.223Z",
+    "updated_at": "2023-11-08T20:37:10.260Z"
+  },
+  {
+    "id": 208,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 77.78,
+    "status": "completed",
+    "created_at": "2023-11-08T20:11:53.008Z",
+    "updated_at": "2023-11-08T20:11:53.013Z"
+  },
+  {
+    "id": 207,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 76.67,
+    "status": "completed",
+    "created_at": "2023-11-08T20:10:29.743Z",
+    "updated_at": "2023-11-08T20:10:29.747Z"
+  },
+  {
+    "id": 206,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 75.44,
+    "status": "completed",
+    "created_at": "2023-11-08T20:00:11.797Z",
+    "updated_at": "2023-11-08T20:00:11.801Z"
+  },
+  {
+    "id": 202,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 75.93,
+    "status": "completed",
+    "created_at": "2023-11-08T19:54:26.093Z",
+    "updated_at": "2023-11-08T19:54:26.098Z"
+  },
+  {
+    "id": 199,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 76.47,
+    "status": "completed",
+    "created_at": "2023-11-08T19:41:05.526Z",
+    "updated_at": "2023-11-08T19:41:05.530Z"
+  },
+  {
+    "id": 198,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 77.08,
+    "status": "completed",
+    "created_at": "2023-11-08T19:39:58.493Z",
+    "updated_at": "2023-11-08T19:39:58.497Z"
+  },
+  {
+    "id": 196,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 77.78,
+    "status": "completed",
+    "created_at": "2023-11-08T19:26:30.040Z",
+    "updated_at": "2023-11-08T19:26:30.044Z"
+  },
+  {
+    "id": 195,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 78.57,
+    "status": "completed",
+    "created_at": "2023-11-08T19:24:23.633Z",
+    "updated_at": "2023-11-08T19:24:23.640Z"
+  },
+  {
+    "id": 194,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 79.49,
+    "status": "completed",
+    "created_at": "2023-11-08T19:23:18.676Z",
+    "updated_at": "2023-11-08T19:23:18.680Z"
+  },
+  {
+    "id": 184,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 80.56,
+    "status": "completed",
+    "created_at": "2023-11-08T18:17:21.962Z",
+    "updated_at": "2023-11-08T18:17:21.967Z"
+  },
+  {
+    "id": 183,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 81.82,
+    "status": "completed",
+    "created_at": "2023-11-08T18:16:44.972Z",
+    "updated_at": "2023-11-08T18:16:44.976Z"
+  },
+  {
+    "id": 182,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 83.33,
+    "status": "completed",
+    "created_at": "2023-11-08T18:15:52.081Z",
+    "updated_at": "2023-11-08T18:15:52.087Z"
+  },
+  {
+    "id": 181,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 85.19,
+    "status": "completed",
+    "created_at": "2023-11-08T18:14:43.736Z",
+    "updated_at": "2023-11-08T18:14:43.741Z"
+  },
+  {
+    "id": 180,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 87.5,
+    "status": "completed",
+    "created_at": "2023-11-08T18:13:44.967Z",
+    "updated_at": "2023-11-08T18:13:45.004Z"
+  },
+  {
+    "id": 179,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 90.48,
+    "status": "completed",
+    "created_at": "2023-11-07T18:09:13.522Z",
+    "updated_at": "2023-11-07T18:09:13.526Z"
+  },
+  {
+    "id": 178,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 94.44,
+    "status": "completed",
+    "created_at": "2023-11-07T18:09:02.091Z",
+    "updated_at": "2023-11-07T18:09:02.094Z"
+  },
+  {
+    "id": 177,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 100.0,
+    "status": "completed",
+    "created_at": "2023-11-07T18:08:53.918Z",
+    "updated_at": "2023-11-07T18:08:53.922Z"
+  },
+  {
+    "id": 176,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 100.0,
+    "status": "completed",
+    "created_at": "2023-11-07T17:33:26.801Z",
+    "updated_at": "2023-11-07T17:33:26.806Z"
+  },
+  {
+    "id": 175,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 100.0,
+    "status": "completed",
+    "created_at": "2023-11-07T17:30:16.664Z",
+    "updated_at": "2023-11-07T17:30:16.669Z"
+  },
+  {
+    "id": 173,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 100.0,
+    "status": "completed",
+    "created_at": "2023-11-07T17:29:51.842Z",
+    "updated_at": "2023-11-07T17:29:51.848Z"
+  },
+  {
+    "id": 172,
+    "user": 13,
+    "company": 5,
+    "quiz": 6,
+    "score": 100.0,
+    "status": "completed",
+    "created_at": "2023-11-07T17:28:48.762Z",
+    "updated_at": "2023-11-07T17:28:48.767Z"
+  }
+]

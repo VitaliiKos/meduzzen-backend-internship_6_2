@@ -1,0 +1,52 @@
+[
+  {
+    "id": 266,
+    "user": 13,
+    "company": 5,
+    "quiz": 8,
+    "score": 83.18,
+    "status": "started",
+    "created_at": "2023-11-10T12:27:08.197Z",
+    "updated_at": "2023-11-10T12:27:08.202Z"
+  },
+  {
+    "id": 265,
+    "user": 13,
+    "company": 5,
+    "quiz": 8,
+    "score": 66.67,
+    "status": "completed",
+    "created_at": "2023-11-10T12:23:42.095Z",
+    "updated_at": "2023-11-10T12:23:42.099Z"
+  },
+  {
+    "id": 264,
+    "user": 13,
+    "company": 5,
+    "quiz": 8,
+    "score": 100.0,
+    "status": "completed",
+    "created_at": "2023-11-10T12:23:17.438Z",
+    "updated_at": "2023-11-10T12:23:17.442Z"
+  },
+  {
+    "id": 263,
+    "user": 13,
+    "company": 5,
+    "quiz": 8,
+    "score": 83.84,
+    "status": "completed",
+    "created_at": "2023-11-10T12:14:21.138Z",
+    "updated_at": "2023-11-10T12:14:21.142Z"
+  },
+  {
+    "id": 262,
+    "user": 13,
+    "company": 5,
+    "quiz": 8,
+    "score": 83.33,
+    "status": "completed",
+    "created_at": "2023-11-10T12:12:02.207Z",
+    "updated_at": "2023-11-10T12:12:02.211Z"
+  }
+]
