@@ -10,7 +10,8 @@ from core.enums.quiz_result_enum import QuizResultEnum
 class QuizResultSerializer(ModelSerializer):
     class Meta:
         model = QuizResultModel
-        fields = '__all__'
+        fields = ('id', 'user', 'company', 'quiz', 'score', 'status', 'total_question', 'total_answer', 'created_at',
+                  'updated_at')
         read_only_fields = ('score', 'user', 'company', 'quiz')
 
     @transaction.atomic

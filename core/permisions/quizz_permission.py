@@ -1,4 +1,5 @@
 from rest_framework import permissions
+from rest_framework.generics import get_object_or_404
 
 from apps.companies.models import CompanyModel
 from apps.quizzes.models import AnswerModel, QuestionModel, QuizModel
@@ -24,3 +25,14 @@ class QuizPermission(permissions.BasePermission):
         elif isinstance(obj, AnswerModel):
             return obj.question.quiz.company.is_owner(request.user.id) or obj.question.quiz.company.is_admin(
                 request.user.id)
+
+
+class ExportQuizResultPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        params_dict = request.query_params.dict()
+        if 'company' in params_dict:
+            company = get_object_or_404(CompanyModel, pk=params_dict.get('company'))
+            if 'user' in params_dict and not company.has_member(params_dict.get('user')):
+                return False
+            return company.is_owner(request.user.id) or company.is_admin(request.user.id)
+        return True
