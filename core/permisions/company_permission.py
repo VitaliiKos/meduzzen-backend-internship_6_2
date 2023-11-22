@@ -45,3 +45,13 @@ class IsCompanyOwner(permissions.BasePermission):
         if company_id:
             company = CompanyModel.objects.get(id=company_id)
             return company.is_owner(request.user.id)
+
+
+class IsCompanyOwnerOrAdmin(permissions.BasePermission):
+    """Custom permission to allow the company owner to have full access.
+
+    This permission class checks if the request user is the owner of the company.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        return obj.is_owner(request.user.id) or obj.is_admin(request.user.id)

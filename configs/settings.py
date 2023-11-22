@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'apps.invitations',
     'apps.quizzes',
     'apps.quizzes.quiz_workflow',
+    'apps.analytics',
 
 ]
 
