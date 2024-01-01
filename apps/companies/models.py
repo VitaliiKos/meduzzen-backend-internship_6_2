@@ -31,7 +31,7 @@ class CompanyModel(TimeStampedModel):
 
     def get_members(self):
         """Get all employees with roles 'OWNER' or 'MEMBER' for this company."""
-        return self.employeemodel_set.filter(role__in=[UserEnum.OWNER, UserEnum.MEMBER])
+        return self.employeemodel_set.filter(role__in=[UserEnum.OWNER, UserEnum.MEMBER, UserEnum.ADMIN])
 
     def get_admins(self):
         """Get all employees with roles 'ADMIN' for this company."""

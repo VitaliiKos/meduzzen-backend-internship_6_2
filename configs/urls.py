@@ -7,6 +7,7 @@ urlpatterns = [
     path('users', include('apps.users.urls')),
     path('company', include('apps.companies.urls')),
     path('invitation', include('apps.invitations.urls')),
+    path('analytics', include('apps.analytics.urls')),
 
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
